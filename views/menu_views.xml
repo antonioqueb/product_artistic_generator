@@ -1,5 +1,6 @@
 <odoo>
-    <record id="action_artistic_generator" model="ir.actions.client">Generador</field>
+    <record id="action_artistic_generator" model="ir.actions.client">
+        <field name="name">Generador</field>
         <field name="tag">artistic_product_generator</field>
     </record>
 
