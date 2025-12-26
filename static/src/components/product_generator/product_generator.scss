@@ -1,72 +1,94 @@
-.o_artistic_container {
+.o_artistic_wrapper {
     background-color: #f8f9fa;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Inter', sans-serif;
+    padding: 20px;
 
-    .o_generator_card {
+    .o_main_card {
         background: white;
         padding: 40px;
         border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        box-shadow: 0 10px 35px rgba(113, 75, 103, 0.15);
         width: 100%;
-        max-width: 800px;
+        max-width: 650px;
 
-        h1 { color: #714B67; font-weight: 700; }
-        label { 
+        .o_title { 
+            color: #714B67; /* Primario Odoo */
+            font-weight: 700; 
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 15px;
+        }
+
+        .o_primary_color { color: #714B67; }
+
+        .o_label { 
             font-size: 0.75rem; 
             font-weight: 800; 
-            color: #8F8F8F; 
+            color: #8F8F8F; /* Gris Odoo */
             margin-bottom: 8px;
             display: block;
         }
 
-        .custom_input {
+        .o_input, .o_select {
             border: 2px solid #eee;
             border-radius: 8px;
             padding: 12px;
+            width: 100%;
+            font-weight: 600;
             transition: all 0.3s;
             &:focus {
-                border-color: #017E84;
-                box-shadow: none;
+                border-color: #017E84; /* Secundario Odoo */
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(1, 126, 132, 0.1);
             }
         }
 
-        .btn-primary { background-color: #714B67; border: none; &:hover { background-color: #5a3c52; } }
-        .btn-success { background-color: #21B799; border: none; &:hover { background-color: #1a927a; } }
-        .btn-secondary { background-color: #5B899E; border: none; }
+        .o_btn_primary { 
+            background-color: #714B67; 
+            color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700;
+            &:hover { background-color: #5a3c52; }
+        }
 
-        .category_card {
+        .o_btn_success { 
+            background-color: #21B799; /* Ready Partner */
+            color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700;
+            &:hover { background-color: #1a927a; }
+        }
+
+        .o_choice_card {
             border: 2px solid #eee;
-            padding: 40px;
+            padding: 35px;
             border-radius: 12px;
-            width: 180px;
+            width: 170px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 15px;
 
-            i { font-size: 2.5rem; color: #8F8F8F; }
+            i { font-size: 2.8rem; color: #8F8F8F; }
             span { font-weight: 700; color: #714B67; }
 
             &:hover {
-                transform: translateY(-5px);
-                border-color: #E4A900;
-                box-shadow: 0 5px 15px rgba(228, 169, 0, 0.2);
+                transform: translateY(-8px);
+                border-color: #E4A900; /* Gold */
+                box-shadow: 0 8px 20px rgba(228, 169, 0, 0.2);
                 i { color: #E4A900; }
             }
         }
     }
 }
 
-.step_animation {
-    animation: fadeInRight 0.5s ease-out;
+.o_fade_in {
+    animation: fadeInRight 0.4s ease-out;
 }
 
 @keyframes fadeInRight {
-    from { opacity: 0; transform: translateX(20px); }
+    from { opacity: 0; transform: translateX(30px); }
     to { opacity: 1; transform: translateX(0); }
 }

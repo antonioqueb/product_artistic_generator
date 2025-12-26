@@ -36,7 +36,7 @@
                     </div>
                 </div>
 
-                <!-- PASO 2: RAMIFICACIÓN (PLACA O FORMATO) -->
+                <!-- PASO 2: RAMIFICACIÓN -->
                 <div t-if="state.step === 2" class="o_fade_in text-center">
                     <h3 class="mb-4 text-muted">¿ES PLACA O FORMATO?</h3>
                     <div class="d-flex justify-content-center gap-4">
@@ -52,7 +52,7 @@
                     <button class="btn btn-link mt-4" t-on-click="() => this.state.step = 1">VOLVER</button>
                 </div>
 
-                <!-- PASO 3: SELECCIÓN FINAL DE CATEGORÍA -->
+                <!-- PASO 3: SELECCIÓN FINAL -->
                 <div t-if="state.step === 3" class="o_fade_in">
                     <h3 class="mb-4 o_primary_color">CATEGORÍA ESPECÍFICA</h3>
                     <select class="o_select mb-4" t-model="state.selection.category_id">
