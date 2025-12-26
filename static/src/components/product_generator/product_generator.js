@@ -93,7 +93,14 @@ export class ArtisticGenerator extends Component {
             [['display_name', 'ilike', searchName]], 
             ["display_name"]
         );
-        this.state.subCategories = categories.filter(c => c.display_name !== searchName);
+        // Filtrar categoría padre y extraer solo el nombre corto
+        this.state.subCategories = categories
+            .filter(c => c.display_name !== searchName)
+            .map(c => ({
+                id: c.id,
+                display_name: c.display_name,
+                short_name: c.display_name.split(' / ').pop() // Último segmento
+            }));
         this.state.step = 3;
     }
 

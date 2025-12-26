@@ -84,9 +84,9 @@
                 <div t-if="state.step === 3" class="o_fade_in">
                     <h3 class="mb-4 o_primary_color">CATEGORÍA ESPECÍFICA</h3>
                     <select class="o_select mb-4" t-model="state.selection.category_id">
-                        <option value="">ELIJA CATEGORÍA HIJA...</option>
+                        <option value="">ELIJA CATEGORÍA...</option>
                         <t t-foreach="state.subCategories" t-as="sc" t-key="sc.id">
-                            <option t-att-value="sc.id"><t t-esc="sc.display_name.toUpperCase()"/></option>
+                            <option t-att-value="sc.id"><t t-esc="sc.short_name.toUpperCase()"/></option>
                         </t>
                     </select>
                     <div class="d-flex justify-content-between">
