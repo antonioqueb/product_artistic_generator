@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_finish,product.finish,model_product_finish,base.group_user,1,1,1,1
+access_product_thickness,product.thickness,model_product_thickness,base.group_user,1,1,1,1
+access_product_artistic_name,product.artistic.name,model_product_artistic_name,base.group_user,1,1,1,1
