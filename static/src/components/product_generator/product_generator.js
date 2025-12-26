@@ -17,6 +17,8 @@ export class ArtisticGenerator extends Component {
             filteredThicknesses: [],
             showFinishDropdown: false,
             showThicknessDropdown: false,
+            finishSearch: '',
+            thicknessSearch: '',
             subCategories: [],
             selection: {
                 artistic_name: '',
@@ -33,7 +35,6 @@ export class ArtisticGenerator extends Component {
             this.state.filteredThicknesses = [...this.state.thicknesses];
         });
 
-        // Cerrar dropdowns al hacer click fuera
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.o_searchable_select')) {
                 this.state.showFinishDropdown = false;
@@ -42,30 +43,33 @@ export class ArtisticGenerator extends Component {
         });
     }
 
-    getFinishName() {
-        const f = this.state.finishes.find(x => x.id == this.state.selection.finish_id);
-        return f ? f.name.toUpperCase() : '';
+    onFinishFocus() {
+        this.state.showFinishDropdown = true;
+        this.state.finishSearch = '';
+        this.state.filteredFinishes = [...this.state.finishes];
     }
 
-    getThicknessName() {
-        const t = this.state.thicknesses.find(x => x.id == this.state.selection.thickness_id);
-        return t ? t.name.toUpperCase() : '';
+    onThicknessFocus() {
+        this.state.showThicknessDropdown = true;
+        this.state.thicknessSearch = '';
+        this.state.filteredThicknesses = [...this.state.thicknesses];
     }
 
     filterFinishes(ev) {
-        const val = ev.target.value.toLowerCase();
+        const val = ev.target.value;
+        this.state.finishSearch = val;
         this.state.filteredFinishes = this.state.finishes.filter(f => 
-            f.name.toLowerCase().includes(val)
+            f.name.toLowerCase().includes(val.toLowerCase())
         );
         this.state.showFinishDropdown = true;
-        // Limpiar selección si está escribiendo
         this.state.selection.finish_id = null;
     }
 
     filterThicknesses(ev) {
-        const val = ev.target.value.toLowerCase();
+        const val = ev.target.value;
+        this.state.thicknessSearch = val;
         this.state.filteredThicknesses = this.state.thicknesses.filter(t => 
-            t.name.toLowerCase().includes(val)
+            t.name.toLowerCase().includes(val.toLowerCase())
         );
         this.state.showThicknessDropdown = true;
         this.state.selection.thickness_id = null;
@@ -73,11 +77,13 @@ export class ArtisticGenerator extends Component {
 
     selectFinish(f) {
         this.state.selection.finish_id = f.id;
+        this.state.finishSearch = f.name.toUpperCase();
         this.state.showFinishDropdown = false;
     }
 
     selectThickness(t) {
         this.state.selection.thickness_id = t.id;
+        this.state.thicknessSearch = t.name.toUpperCase();
         this.state.showThicknessDropdown = false;
     }
 

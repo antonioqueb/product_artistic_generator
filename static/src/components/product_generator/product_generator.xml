@@ -15,9 +15,9 @@
                             <label class="o_label">ACABADO</label>
                             <div class="o_searchable_select">
                                 <input type="text" class="o_input" 
-                                    t-att-value="getFinishName()" 
-                                    t-on-input="(ev) => this.filterFinishes(ev)"
-                                    t-on-focus="() => this.state.showFinishDropdown = true"
+                                    t-model="state.finishSearch"
+                                    t-on-input="filterFinishes"
+                                    t-on-focus="onFinishFocus"
                                     placeholder="Buscar acabado..."/>
                                 <div t-if="state.showFinishDropdown" class="o_dropdown_list">
                                     <t t-foreach="state.filteredFinishes" t-as="f" t-key="f.id">
@@ -35,9 +35,9 @@
                             <label class="o_label">ESPESOR</label>
                             <div class="o_searchable_select">
                                 <input type="text" class="o_input" 
-                                    t-att-value="getThicknessName()" 
-                                    t-on-input="(ev) => this.filterThicknesses(ev)"
-                                    t-on-focus="() => this.state.showThicknessDropdown = true"
+                                    t-model="state.thicknessSearch"
+                                    t-on-input="filterThicknesses"
+                                    t-on-focus="onThicknessFocus"
                                     placeholder="Buscar espesor..."/>
                                 <div t-if="state.showThicknessDropdown" class="o_dropdown_list">
                                     <t t-foreach="state.filteredThicknesses" t-as="t" t-key="t.id">
