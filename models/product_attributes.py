@@ -22,7 +22,7 @@ class ProductTemplate(models.Model):
         
         return self.create({
             'name': full_name,
-            'type': 'product',           # Bienes (Almacenable)
+            'type': 'consu',           # Bienes (Almacenable)
             'tracking': 'lot',           # Rastreo por lotes
             'categ_id': vals['category_id'],
             'purchase_method': 'purchase', # Facturas sobre cantidades ordenadas
