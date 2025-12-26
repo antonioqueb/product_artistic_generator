@@ -53,9 +53,9 @@ class ProductTemplate(models.Model):
         thickness = vals.get('thickness', '').strip()
         dimension = vals.get('dimension', '').strip()
         
-        # Construir nombre según tipo
+        # Construir nombre según tipo (espesor siempre al final)
         if dimension:
-            full_name = f"{generic_name} {artistic_name} {finish} {thickness} {dimension}".upper()
+            full_name = f"{generic_name} {artistic_name} {finish} {dimension} {thickness}".upper()
         else:
             full_name = f"{generic_name} {artistic_name} {finish} {thickness}".upper()
         
