@@ -12,7 +12,9 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'product_artistic_generator/static/src/components/product_generator/**/*',
+            'product_artistic_generator/static/src/components/product_generator/product_generator.js',
+            'product_artistic_generator/static/src/components/product_generator/product_generator.xml',
+            'product_artistic_generator/static/src/components/product_generator/product_generator.scss',
         ],
     },
     'installable': True,

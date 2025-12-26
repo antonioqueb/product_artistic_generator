@@ -41,11 +41,12 @@
                     <h3 class="mb-4 text-muted">¿ES PLACA O FORMATO?</h3>
                     <div class="d-flex justify-content-center gap-4">
                         <div class="o_choice_card" t-on-click="() => this.selectType('Placas')">
-                            <i class="fa fa-layer-group"/>
+                            <i class="fa fa-th"/>
                             <span>PLACA</span>
                         </div>
                         <div class="o_choice_card" t-on-click="() => this.selectType('Formatos')">
-                            <i class="fa fa-th"/>
+                            
+                            <i class="fa fa-layer-group"/>
                             <span>FORMATO</span>
                         </div>
                     </div>
