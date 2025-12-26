@@ -4,7 +4,7 @@
         <field name="tag">artistic_product_generator</field>
     </record>
 
-    <menuitem id="menu_artistic_root" name="Generador Artístico" web_icon="stock,static/description/icon.png"/>
+    <menuitem id="menu_artistic_root" name="Generador de Productos" web_icon="stock,static/description/icon.png"/>
     <menuitem id="menu_generator_action" name="Crear Producto" parent="menu_artistic_root" action="action_artistic_generator" sequence="10"/>
     <menuitem id="menu_config_root" name="Configuración" parent="menu_artistic_root" sequence="100"/>
     <menuitem id="menu_finish" name="Acabados" parent="menu_config_root" action="action_product_finish"/>

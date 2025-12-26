@@ -1,5 +1,5 @@
 {
-    'name': 'Generador Artístico de Productos Pro',
+    'name': 'Generador de Productos',
     'version': '1.0',
     'category': 'Inventory',
     'summary': 'Interfaz dinámica para creación de productos con lógica de ramificación',
