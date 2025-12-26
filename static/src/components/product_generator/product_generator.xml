@@ -1,80 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="product_artistic_generator.GeneratorTemplate" owl="1">
-        <div class="o_artistic_container">
-            <div class="o_generator_card">
-                <header class="mb32">
-                    <h1 class="text-primary">Generador de Producto Premium</h1>
-                    <p class="text-muted">Siga los pasos para crear un nuevo registro en el inventario.</p>
-                </header>
-
-                <div t-if="state.step === 1" class="step_animation">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <label>NOMBRE ARTÍSTICO</label>
-                            <input type="text" class="form-control custom_input" t-model="state.selection.artistic_name" placeholder="Ej: MARMOL REAL..."/>
+        <div class="o_artistic_wrapper">
+            <div class="o_main_card">
+                
+                <!-- PASO 1: CARACTERÍSTICAS -->
+                <div t-if="state.step === 1" class="o_fade_in">
+                    <h2 class="o_title">NUEVO PRODUCTO</h2>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="o_label">NOMBRE ARTÍSTICO</label>
+                            <input type="text" class="o_input" t-model="state.selection.artistic_name" placeholder="Ej: BLANCO CARRARA"/>
                         </div>
                         <div class="col-md-6">
-                            <label>NOMBRE BASE</label>
-                            <select class="form-select custom_input" t-model="state.selection.base_name_id">
-                                <option value="">Seleccione...</option>
-                                <t t-foreach="state.names" t-as="n" t-key="n.id">
-                                    <option t-att-value="n.id"><t t-esc="n.name.toUpperCase()"/></option>
-                                </t>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label>ACABADO</label>
-                            <select class="form-select custom_input" t-model="state.selection.finish_id">
-                                <option value="">Seleccione...</option>
+                            <label class="o_label">ACABADO</label>
+                            <select class="o_select" t-model="state.selection.finish_id">
+                                <option value="">SELECCIONE...</option>
                                 <t t-foreach="state.finishes" t-as="f" t-key="f.id">
                                     <option t-att-value="f.id"><t t-esc="f.name.toUpperCase()"/></option>
                                 </t>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label>ESPESOR</label>
-                            <select class="form-select custom_input" t-model="state.selection.thickness_id">
-                                <option value="">Seleccione...</option>
+                            <label class="o_label">ESPESOR</label>
+                            <select class="o_select" t-model="state.selection.thickness_id">
+                                <option value="">SELECCIONE...</option>
                                 <t t-foreach="state.thicknesses" t-as="t" t-key="t.id">
                                     <option t-att-value="t.id"><t t-esc="t.name.toUpperCase()"/></option>
                                 </t>
                             </select>
                         </div>
                     </div>
-                    <div class="mt32 d-flex justify-content-end">
-                        <button class="btn btn-primary btn-lg ripple" t-on-click="() => this.state.step = 2">Siguiente Paso <i class="fa fa-arrow-right ml8"/></button>
+                    <div class="text-end mt-4">
+                        <button class="o_btn_primary" t-on-click="() => this.state.step = 2">CONTINUAR</button>
                     </div>
                 </div>
 
-                <div t-if="state.step === 2" class="step_animation text-center">
-                    <h3 class="mb24">¿Qué tipo de Bien es?</h3>
+                <!-- PASO 2: RAMIFICACIÓN (PLACA O FORMATO) -->
+                <div t-if="state.step === 2" class="o_fade_in text-center">
+                    <h3 class="mb-4 text-muted">¿ES PLACA O FORMATO?</h3>
                     <div class="d-flex justify-content-center gap-4">
-                        <div class="category_card placa" t-on-click="() => setMainCategory('PLACA')">
-                            <i class="fa fa-th-large"/>
+                        <div class="o_choice_card" t-on-click="() => this.selectType('Placas')">
+                            <i class="fa fa-layer-group"/>
                             <span>PLACA</span>
                         </div>
-                        <div class="category_card formato" t-on-click="() => setMainCategory('FORMATO')">
-                            <i class="fa fa-square"/>
+                        <div class="o_choice_card" t-on-click="() => this.selectType('Formatos')">
+                            <i class="fa fa-th"/>
                             <span>FORMATO</span>
                         </div>
                     </div>
-                    <button class="btn btn-link mt24" t-on-click="() => this.state.step = 1">Volver</button>
+                    <button class="btn btn-link mt-4" t-on-click="() => this.state.step = 1">VOLVER</button>
                 </div>
 
-                <div t-if="state.step === 3 || (state.step === 2 &amp;&amp; state.selection.main_category)" class="step_animation">
-                    <h3 class="mb24">Seleccione Categoría Específica</h3>
-                    <select class="form-select custom_input mb24" t-model="state.selection.category_id">
-                        <option value="">Seleccione categoría hija...</option>
+                <!-- PASO 3: SELECCIÓN FINAL DE CATEGORÍA -->
+                <div t-if="state.step === 3" class="o_fade_in">
+                    <h3 class="mb-4 o_primary_color">CATEGORÍA ESPECÍFICA</h3>
+                    <select class="o_select mb-4" t-model="state.selection.category_id">
+                        <option value="">ELIJA CATEGORÍA HIJA...</option>
                         <t t-foreach="state.subCategories" t-as="sc" t-key="sc.id">
-                            <option t-att-value="sc.id"><t t-esc="sc.name.toUpperCase()"/></option>
+                            <option t-att-value="sc.id"><t t-esc="sc.display_name.toUpperCase()"/></option>
                         </t>
                     </select>
                     <div class="d-flex justify-content-between">
-                        <button class="btn btn-secondary" t-on-click="() => this.state.step = 2">Atrás</button>
-                        <button class="btn btn-success btn-lg" t-on-click="createProduct">CREAR PRODUCTO AHORA</button>
+                        <button class="btn btn-secondary" t-on-click="() => this.state.step = 2">ATRÁS</button>
+                        <button class="o_btn_success" t-on-click="createProduct">CREAR PRODUCTO</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </t>
