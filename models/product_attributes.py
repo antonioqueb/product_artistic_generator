@@ -18,6 +18,22 @@ class ProductThickness(models.Model):
     name = fields.Char(string='Nombre del Espesor', required=True)
 
 
+class ProductGenericName(models.Model):
+    _name = 'product.generic.name'
+    _description = 'Nombre Genérico de Producto'
+    _order = 'name'
+    
+    name = fields.Char(string='Nombre Genérico', required=True)
+
+
+class ProductDimension(models.Model):
+    _name = 'product.dimension'
+    _description = 'Dimensión de Producto'
+    _order = 'name'
+    
+    name = fields.Char(string='Dimensión', required=True)
+
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -28,10 +44,19 @@ class ProductTemplate(models.Model):
         Forzando: Mayúsculas, Unidad m2, Seguimiento por Lote y Tipo Almacenable.
         """
         artistic_name = vals.get('artistic_name', '').strip()
+        generic_name = vals.get('generic_name', '').strip()
         finish = vals.get('finish', '').strip()
         thickness = vals.get('thickness', '').strip()
+        dimension = vals.get('dimension', '').strip()
         
-        full_name = f"{artistic_name} {finish} {thickness}".upper()
+        # Construir nombre según tipo
+        if dimension:
+            full_name = f"{generic_name} {artistic_name} {finish} {thickness} {dimension}".upper()
+        else:
+            full_name = f"{generic_name} {artistic_name} {finish} {thickness}".upper()
+        
+        # Limpiar espacios múltiples
+        full_name = ' '.join(full_name.split())
 
         uom_m2 = self.env.ref('uom.product_uom_m2', raise_if_not_found=False)
         if not uom_m2:
