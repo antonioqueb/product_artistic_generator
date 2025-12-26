@@ -1,23 +1,23 @@
 <odoo>
-    <record id="view_product_finish_tree" model="ir.ui.view">
-        <field name="name">product.finish.tree</field>
+    <record id="view_product_finish_list" model="ir.ui.view">
+        <field name="name">product.finish.list</field>
         <field name="model">product.finish</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <list editable="bottom">
                 <field name="name"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="action_product_finish" model="ir.actions.act_window">
         <field name="name">Acabados</field>
         <field name="res_model">product.finish</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">list</field>
     </record>
 
     <record id="action_product_thickness" model="ir.actions.act_window">
         <field name="name">Espesores</field>
         <field name="res_model">product.thickness</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">list</field>
     </record>
 </odoo>
