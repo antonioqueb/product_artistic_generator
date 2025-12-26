@@ -5,33 +5,37 @@ from odoo.exceptions import UserError
 class ProductFinish(models.Model):
     _name = 'product.finish'
     _description = 'Acabado de Producto'
-    _order = 'name'
+    _order = 'sequence, name'
     
     name = fields.Char(string='Nombre del Acabado', required=True)
+    sequence = fields.Integer(string='Secuencia', default=10)
 
 
 class ProductThickness(models.Model):
     _name = 'product.thickness'
     _description = 'Espesor de Producto'
-    _order = 'name'
+    _order = 'sequence, name'
     
     name = fields.Char(string='Nombre del Espesor', required=True)
+    sequence = fields.Integer(string='Secuencia', default=10)
 
 
 class ProductGenericName(models.Model):
     _name = 'product.generic.name'
     _description = 'Nombre Genérico de Producto'
-    _order = 'name'
+    _order = 'sequence, name'
     
     name = fields.Char(string='Nombre Genérico', required=True)
+    sequence = fields.Integer(string='Secuencia', default=10)
 
 
 class ProductDimension(models.Model):
     _name = 'product.dimension'
     _description = 'Dimensión de Producto'
-    _order = 'name'
+    _order = 'sequence, name'
     
     name = fields.Char(string='Dimensión', required=True)
+    sequence = fields.Integer(string='Secuencia', default=10)
 
 
 class ProductTemplate(models.Model):

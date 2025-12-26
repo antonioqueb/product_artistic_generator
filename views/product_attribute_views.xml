@@ -4,6 +4,7 @@
         <field name="model">product.finish</field>
         <field name="arch" type="xml">
             <list editable="bottom">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -20,6 +21,7 @@
         <field name="model">product.thickness</field>
         <field name="arch" type="xml">
             <list editable="bottom">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -36,6 +38,7 @@
         <field name="model">product.generic.name</field>
         <field name="arch" type="xml">
             <list editable="bottom">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -52,6 +55,7 @@
         <field name="model">product.dimension</field>
         <field name="arch" type="xml">
             <list editable="bottom">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
