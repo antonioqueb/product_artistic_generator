@@ -3,7 +3,6 @@
     <t t-name="product_artistic_generator.GeneratorTemplate" owl="1">
         <div class="o_artistic_wrapper">
             <div class="o_main_card">
-                
                 <!-- PASO 1: CARACTERÍSTICAS -->
                 <div t-if="state.step === 1" class="o_fade_in">
                     <h2 class="o_title">NUEVO PRODUCTO</h2>
@@ -14,45 +13,73 @@
                         </div>
                         <div class="col-md-6">
                             <label class="o_label">ACABADO</label>
-                            <select class="o_select" t-model="state.selection.finish_id">
-                                <option value="">SELECCIONE...</option>
-                                <t t-foreach="state.finishes" t-as="f" t-key="f.id">
-                                    <option t-att-value="f.id"><t t-esc="f.name.toUpperCase()"/></option>
-                                </t>
-                            </select>
+                            <div class="o_searchable_select">
+                                <input type="text" class="o_input" 
+                                    t-att-value="getFinishName()" 
+                                    t-on-input="(ev) => this.filterFinishes(ev)"
+                                    t-on-focus="() => this.state.showFinishDropdown = true"
+                                    placeholder="Buscar acabado..."/>
+                                <div t-if="state.showFinishDropdown" class="o_dropdown_list">
+                                    <t t-foreach="state.filteredFinishes" t-as="f" t-key="f.id">
+                                        <div class="o_dropdown_item" t-on-click="() => this.selectFinish(f)">
+                                            <t t-esc="f.name.toUpperCase()"/>
+                                        </div>
+                                    </t>
+                                    <div t-if="state.filteredFinishes.length === 0" class="o_dropdown_empty">
+                                        Sin resultados
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="o_label">ESPESOR</label>
-                            <select class="o_select" t-model="state.selection.thickness_id">
-                                <option value="">SELECCIONE...</option>
-                                <t t-foreach="state.thicknesses" t-as="t" t-key="t.id">
-                                    <option t-att-value="t.id"><t t-esc="t.name.toUpperCase()"/></option>
-                                </t>
-                            </select>
+                            <div class="o_searchable_select">
+                                <input type="text" class="o_input" 
+                                    t-att-value="getThicknessName()" 
+                                    t-on-input="(ev) => this.filterThicknesses(ev)"
+                                    t-on-focus="() => this.state.showThicknessDropdown = true"
+                                    placeholder="Buscar espesor..."/>
+                                <div t-if="state.showThicknessDropdown" class="o_dropdown_list">
+                                    <t t-foreach="state.filteredThicknesses" t-as="t" t-key="t.id">
+                                        <div class="o_dropdown_item" t-on-click="() => this.selectThickness(t)">
+                                            <t t-esc="t.name.toUpperCase()"/>
+                                        </div>
+                                    </t>
+                                    <div t-if="state.filteredThicknesses.length === 0" class="o_dropdown_empty">
+                                        Sin resultados
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="text-end mt-4">
                         <button class="o_btn_primary" t-on-click="() => this.state.step = 2">CONTINUAR</button>
                     </div>
                 </div>
-
                 <!-- PASO 2: RAMIFICACIÓN -->
                 <div t-if="state.step === 2" class="o_fade_in text-center">
                     <h3 class="mb-4 text-muted">¿ES PLACA O FORMATO?</h3>
                     <div class="d-flex justify-content-center gap-4">
                         <div class="o_choice_card" t-on-click="() => this.selectType('Placas')">
-                            <i class="fa fa-th"/>
+                            <div class="o_icon_placa">
+                                <div class="o_slab"></div>
+                            </div>
                             <span>PLACA</span>
                         </div>
                         <div class="o_choice_card" t-on-click="() => this.selectType('Formatos')">
-                            
-                            <i class="fa fa-layer-group"/>
+                            <div class="o_icon_formato">
+                                <div class="o_tile"></div>
+                                <div class="o_tile"></div>
+                                <div class="o_tile"></div>
+                                <div class="o_tile"></div>
+                                <div class="o_tile"></div>
+                                <div class="o_tile"></div>
+                            </div>
                             <span>FORMATO</span>
                         </div>
                     </div>
                     <button class="btn btn-link mt-4" t-on-click="() => this.state.step = 1">VOLVER</button>
                 </div>
-
                 <!-- PASO 3: SELECCIÓN FINAL -->
                 <div t-if="state.step === 3" class="o_fade_in">
                     <h3 class="mb-4 o_primary_color">CATEGORÍA ESPECÍFICA</h3>
@@ -67,7 +94,6 @@
                         <button class="o_btn_success" t-on-click="createProduct">CREAR PRODUCTO</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </t>

@@ -8,11 +8,15 @@ export class ArtisticGenerator extends Component {
         this.orm = useService("orm");
         this.notification = useService("notification");
         this.action = useService("action");
-        
+
         this.state = useState({
             step: 1,
             finishes: [],
             thicknesses: [],
+            filteredFinishes: [],
+            filteredThicknesses: [],
+            showFinishDropdown: false,
+            showThicknessDropdown: false,
             subCategories: [],
             selection: {
                 artistic_name: '',
@@ -23,22 +27,66 @@ export class ArtisticGenerator extends Component {
         });
 
         onWillStart(async () => {
-            // Cargar maestros
             this.state.finishes = await this.orm.searchRead("product.finish", [], ["name"]);
             this.state.thicknesses = await this.orm.searchRead("product.thickness", [], ["name"]);
+            this.state.filteredFinishes = [...this.state.finishes];
+            this.state.filteredThicknesses = [...this.state.thicknesses];
+        });
+
+        // Cerrar dropdowns al hacer click fuera
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.o_searchable_select')) {
+                this.state.showFinishDropdown = false;
+                this.state.showThicknessDropdown = false;
+            }
         });
     }
 
+    getFinishName() {
+        const f = this.state.finishes.find(x => x.id == this.state.selection.finish_id);
+        return f ? f.name.toUpperCase() : '';
+    }
+
+    getThicknessName() {
+        const t = this.state.thicknesses.find(x => x.id == this.state.selection.thickness_id);
+        return t ? t.name.toUpperCase() : '';
+    }
+
+    filterFinishes(ev) {
+        const val = ev.target.value.toLowerCase();
+        this.state.filteredFinishes = this.state.finishes.filter(f => 
+            f.name.toLowerCase().includes(val)
+        );
+        this.state.showFinishDropdown = true;
+        // Limpiar selección si está escribiendo
+        this.state.selection.finish_id = null;
+    }
+
+    filterThicknesses(ev) {
+        const val = ev.target.value.toLowerCase();
+        this.state.filteredThicknesses = this.state.thicknesses.filter(t => 
+            t.name.toLowerCase().includes(val)
+        );
+        this.state.showThicknessDropdown = true;
+        this.state.selection.thickness_id = null;
+    }
+
+    selectFinish(f) {
+        this.state.selection.finish_id = f.id;
+        this.state.showFinishDropdown = false;
+    }
+
+    selectThickness(t) {
+        this.state.selection.thickness_id = t.id;
+        this.state.showThicknessDropdown = false;
+    }
+
     async selectType(typeName) {
-        // Buscamos categorías que cuelguen de "Bienes / Placas" o "Bienes / Formatos"
-        // Usamos display_name para filtrar por la ruta completa
         const searchName = "Bienes / " + typeName;
         const categories = await this.orm.searchRead("product.category", 
             [['display_name', 'ilike', searchName]], 
             ["display_name"]
         );
-        
-        // Filtramos para no incluir la categoría padre misma si aparece
         this.state.subCategories = categories.filter(c => c.display_name !== searchName);
         this.state.step = 3;
     }
@@ -60,8 +108,7 @@ export class ArtisticGenerator extends Component {
         }]);
 
         this.notification.add("¡Producto generado exitosamente!", { type: 'success' });
-        
-        // Ir al producto creado
+
         this.action.doAction({
             type: 'ir.actions.act_window',
             res_model: 'product.template',
