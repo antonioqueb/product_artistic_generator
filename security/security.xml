@@ -1,6 +1,5 @@
 <odoo>
     <record id="group_product_generator" model="res.groups">
         <field name="name">Generador de Productos</field>
-        <field name="category_id" ref="base.module_category_inventory_inventory"/>
     </record>
 </odoo>
