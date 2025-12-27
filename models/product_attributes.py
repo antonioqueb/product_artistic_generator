@@ -6,7 +6,7 @@ class ProductFinish(models.Model):
     _name = 'product.finish'
     _description = 'Acabado de Producto'
     _order = 'sequence, name'
-    
+
     name = fields.Char(string='Nombre del Acabado', required=True)
     sequence = fields.Integer(string='Secuencia', default=10)
 
@@ -15,7 +15,7 @@ class ProductThickness(models.Model):
     _name = 'product.thickness'
     _description = 'Espesor de Producto'
     _order = 'sequence, name'
-    
+
     name = fields.Char(string='Nombre del Espesor', required=True)
     sequence = fields.Integer(string='Secuencia', default=10)
 
@@ -24,7 +24,7 @@ class ProductGenericName(models.Model):
     _name = 'product.generic.name'
     _description = 'Nombre Genérico de Producto'
     _order = 'sequence, name'
-    
+
     name = fields.Char(string='Nombre Genérico', required=True)
     sequence = fields.Integer(string='Secuencia', default=10)
 
@@ -33,7 +33,7 @@ class ProductDimension(models.Model):
     _name = 'product.dimension'
     _description = 'Dimensión de Producto'
     _order = 'sequence, name'
-    
+
     name = fields.Char(string='Dimensión', required=True)
     sequence = fields.Integer(string='Secuencia', default=10)
 
@@ -47,25 +47,28 @@ class ProductTemplate(models.Model):
         Crea un producto basado en parámetros artísticos.
         Forzando: Mayúsculas, Unidad m2, Seguimiento por Lote y Tipo Almacenable.
         """
+        if not self.env.user.has_group('product_artistic_generator.group_product_generator'):
+            raise UserError(_("No tiene permisos para generar productos."))
+
         artistic_name = vals.get('artistic_name', '').strip()
         generic_name = vals.get('generic_name', '').strip()
         finish = vals.get('finish', '').strip()
         thickness = vals.get('thickness', '').strip()
         dimension = vals.get('dimension', '').strip()
-        
+
         # Construir nombre según tipo (espesor siempre al final)
         if dimension:
             full_name = f"{generic_name} {artistic_name} {finish} {dimension} {thickness}".upper()
         else:
             full_name = f"{generic_name} {artistic_name} {finish} {thickness}".upper()
-        
+
         # Limpiar espacios múltiples
         full_name = ' '.join(full_name.split())
 
         uom_m2 = self.env.ref('uom.product_uom_m2', raise_if_not_found=False)
         if not uom_m2:
             uom_m2 = self.env['uom.uom'].search([('name', 'ilike', 'm²')], limit=1)
-        
+
         if not uom_m2:
             raise UserError(_("No se encontró la unidad de medida 'm²' en el sistema."))
 

@@ -20,6 +20,7 @@ Ideal para empresas que requieren una gestión detallada de productos personaliz
 
     'depends': ['base', 'stock', 'purchase', 'product'],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/product_attribute_views.xml',
         'views/menu_views.xml',
