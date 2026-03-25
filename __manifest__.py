@@ -12,7 +12,7 @@ Módulo avanzado para la creación dinámica de productos basados en atributos.
     'website': 'https://www.alphaqueb.com',
     'license': 'AGPL-3',
 
-    'depends': ['base', 'stock', 'purchase', 'product', 'product_origin_name'],
+    'depends': ['base', 'stock', 'purchase', 'product'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

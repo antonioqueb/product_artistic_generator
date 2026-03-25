@@ -77,8 +77,8 @@ class ProductTemplate(models.Model):
             'purchase_ok': True,
         })
 
-        # Crear nombre de origen si se proporcionó
-        if origin_name:
+        # Crear nombre de origen si se proporcionó y el modelo existe
+        if origin_name and 'product.origin.name' in self.env:
             origin_vals = {
                 'name': origin_name,
                 'product_tmpl_id': product_template.id,
