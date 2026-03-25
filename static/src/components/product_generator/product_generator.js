@@ -16,24 +16,28 @@ export class ArtisticGenerator extends Component {
             thicknesses: [],
             dimensions: [],
             suppliers: [],
+            brands: [],
             filteredFinishes: [],
             filteredThicknesses: [],
             filteredDimensions: [],
             filteredSuppliers: [],
+            filteredBrands: [],
             showFinishDropdown: false,
             showThicknessDropdown: false,
             showDimensionDropdown: false,
             showSupplierDropdown: false,
+            showBrandDropdown: false,
             finishSearch: '',
             thicknessSearch: '',
             dimensionSearch: '',
             supplierSearch: '',
+            brandSearch: '',
             subCategories: [],
             selection: {
                 commercial_name: '',
                 origin_name: '',
                 color: '',
-                marca: '',
+                brand_id: null,
                 finish_id: null,
                 thickness_id: null,
                 dimension_id: null,
@@ -47,10 +51,12 @@ export class ArtisticGenerator extends Component {
             this.state.thicknesses = await this.orm.searchRead("product.thickness", [], ["name"]);
             this.state.dimensions = await this.orm.searchRead("product.dimension", [], ["name"]);
             this.state.suppliers = await this.orm.searchRead("res.partner", [['supplier_rank', '>', 0]], ["name"]);
+            this.state.brands = await this.orm.searchRead("product.brand", [], ["name"]);
             this.state.filteredFinishes = [...this.state.finishes];
             this.state.filteredThicknesses = [...this.state.thicknesses];
             this.state.filteredDimensions = [...this.state.dimensions];
             this.state.filteredSuppliers = [...this.state.suppliers];
+            this.state.filteredBrands = [...this.state.brands];
         });
 
         document.addEventListener('click', (e) => {
@@ -59,6 +65,7 @@ export class ArtisticGenerator extends Component {
                 this.state.showThicknessDropdown = false;
                 this.state.showDimensionDropdown = false;
                 this.state.showSupplierDropdown = false;
+                this.state.showBrandDropdown = false;
             }
         });
     }
@@ -145,6 +152,27 @@ export class ArtisticGenerator extends Component {
         this.state.showSupplierDropdown = false;
     }
 
+    // Brand
+    onBrandFocus() {
+        this.state.showBrandDropdown = true;
+        this.state.brandSearch = '';
+        this.state.filteredBrands = [...this.state.brands];
+    }
+    filterBrands(ev) {
+        const val = ev.target.value;
+        this.state.brandSearch = val;
+        this.state.filteredBrands = this.state.brands.filter(b =>
+            b.name.toLowerCase().includes(val.toLowerCase())
+        );
+        this.state.showBrandDropdown = true;
+        this.state.selection.brand_id = null;
+    }
+    selectBrand(b) {
+        this.state.selection.brand_id = b.id;
+        this.state.brandSearch = b.name.toUpperCase();
+        this.state.showBrandDropdown = false;
+    }
+
     // ---- Helpers ----
 
     get showDimension() {
@@ -186,7 +214,7 @@ export class ArtisticGenerator extends Component {
             commercial_name: '',
             origin_name: '',
             color: '',
-            marca: '',
+            brand_id: null,
             finish_id: null,
             thickness_id: null,
             dimension_id: null,
@@ -197,6 +225,7 @@ export class ArtisticGenerator extends Component {
         this.state.thicknessSearch = '';
         this.state.dimensionSearch = '';
         this.state.supplierSearch = '';
+        this.state.brandSearch = '';
     }
 
     // ---- Create ----
@@ -210,12 +239,13 @@ export class ArtisticGenerator extends Component {
         const finish = this.state.finishes.find(f => f.id == this.state.selection.finish_id)?.name || '';
         const thickness = this.state.thicknesses.find(t => t.id == this.state.selection.thickness_id)?.name || '';
         const dimension = this.state.dimensions.find(d => d.id == this.state.selection.dimension_id)?.name || '';
+        const brand = this.state.brands.find(b => b.id == this.state.selection.brand_id)?.name || '';
 
         const resId = await this.orm.call("product.template", "create_artistic_product", [{
             'commercial_name': this.state.selection.commercial_name,
             'origin_name': this.state.selection.origin_name,
             'color': this.state.selection.color,
-            'marca': this.showMarca ? this.state.selection.marca : '',
+            'marca': this.showMarca ? brand : '',
             'finish': finish,
             'thickness': thickness,
             'dimension': this.showDimension ? dimension : '',

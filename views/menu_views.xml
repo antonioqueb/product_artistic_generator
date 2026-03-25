@@ -10,5 +10,6 @@
     <menuitem id="menu_finish" name="Acabados" parent="menu_config_root" action="action_product_finish" sequence="10"/>
     <menuitem id="menu_thickness" name="Espesores" parent="menu_config_root" action="action_product_thickness" sequence="20"/>
     <menuitem id="menu_dimension" name="Dimensiones" parent="menu_config_root" action="action_product_dimension" sequence="40"/>
+    <menuitem id="menu_brand" name="Marcas" parent="menu_config_root" action="action_product_brand" sequence="45"/>
     <menuitem id="menu_category_config" name="Categorías por Tipo" parent="menu_config_root" action="action_generator_category_config" sequence="50"/>
 </odoo>

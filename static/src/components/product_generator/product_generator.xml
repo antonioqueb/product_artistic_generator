@@ -103,7 +103,23 @@
                         <!-- Marca Comercial (formato y placa sintética) -->
                         <div t-if="showMarca" class="col-md-6">
                             <label class="o_label">MARCA COMERCIAL</label>
-                            <input type="text" class="o_input" t-model="state.selection.marca" placeholder="Ej: DEKTON, SILESTONE..."/>
+                            <div class="o_searchable_select">
+                                <input type="text" class="o_input"
+                                    t-model="state.brandSearch"
+                                    t-on-input="filterBrands"
+                                    t-on-focus="onBrandFocus"
+                                    placeholder="Buscar marca..."/>
+                                <div t-if="state.showBrandDropdown" class="o_dropdown_list">
+                                    <t t-foreach="state.filteredBrands" t-as="b" t-key="b.id">
+                                        <div class="o_dropdown_item" t-on-click="() => this.selectBrand(b)">
+                                            <t t-esc="b.name.toUpperCase()"/>
+                                        </div>
+                                    </t>
+                                    <div t-if="state.filteredBrands.length === 0" class="o_dropdown_empty">
+                                        Sin resultados
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Dimensión (formato y placa sintética) -->

@@ -29,6 +29,15 @@ class ProductDimension(models.Model):
     sequence = fields.Integer(string='Secuencia', default=10)
 
 
+class ProductBrand(models.Model):
+    _name = 'product.brand'
+    _description = 'Marca Comercial de Producto'
+    _order = 'sequence, name'
+
+    name = fields.Char(string='Marca', required=True)
+    sequence = fields.Integer(string='Secuencia', default=10)
+
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -51,7 +60,7 @@ class ProductTemplate(models.Model):
         supplier_id = vals.get('supplier_id')
         product_type = vals.get('product_type', '')
 
-        # Construir nombre: NOMBRE_COMERCIAL ACABADO DIMENSION ESPESOR
+        # Construir nombre: NOMBRE_COMERCIAL ACABADO DIMENSION ESPESOR - MARCA
         parts = [commercial_name, finish]
         if dimension:
             parts.append(dimension)
@@ -60,6 +69,10 @@ class ProductTemplate(models.Model):
         full_name = ' '.join(p for p in parts if p).upper()
         # Limpiar espacios múltiples
         full_name = ' '.join(full_name.split())
+
+        # Agregar marca con separador guion
+        if marca:
+            full_name = f"{full_name} - {marca.upper()}"
 
         uom_m2 = self.env.ref('uom.product_uom_m2', raise_if_not_found=False)
         if not uom_m2:

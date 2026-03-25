@@ -50,6 +50,24 @@
         <field name="view_mode">list</field>
     </record>
 
+    <!-- Marcas -->
+    <record id="view_product_brand_list" model="ir.ui.view">
+        <field name="name">product.brand.list</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_product_brand" model="ir.actions.act_window">
+        <field name="name">Marcas</field>
+        <field name="res_model">product.brand</field>
+        <field name="view_mode">list</field>
+    </record>
+
     <!-- Categorías por Tipo - Lista -->
     <record id="view_generator_category_config_list" model="ir.ui.view">
         <field name="name">generator.category.config.list</field>
