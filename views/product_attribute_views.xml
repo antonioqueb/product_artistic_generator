@@ -50,22 +50,39 @@
         <field name="view_mode">list</field>
     </record>
 
-    <!-- Categorías por Tipo -->
+    <!-- Categorías por Tipo - Lista -->
     <record id="view_generator_category_config_list" model="ir.ui.view">
         <field name="name">generator.category.config.list</field>
         <field name="model">generator.category.config</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
-                <field name="sequence" widget="handle"/>
+            <list>
                 <field name="product_type"/>
-                <field name="category_id"/>
+                <field name="category_ids" widget="many2many_tags"/>
             </list>
+        </field>
+    </record>
+
+    <!-- Categorías por Tipo - Formulario -->
+    <record id="view_generator_category_config_form" model="ir.ui.view">
+        <field name="name">generator.category.config.form</field>
+        <field name="model">generator.category.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="product_type"/>
+                    </group>
+                    <group string="Categorías Disponibles">
+                        <field name="category_ids" widget="many2many_tags" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 
     <record id="action_generator_category_config" model="ir.actions.act_window">
         <field name="name">Categorías por Tipo</field>
         <field name="res_model">generator.category.config</field>
-        <field name="view_mode">list</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>
