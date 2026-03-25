@@ -35,39 +35,17 @@
                         <t t-else="">NUEVO FORMATO</t>
                     </h2>
                     <div class="row g-3">
-                        <!-- Nombre Genérico -->
+                        <!-- Nombre Comercial -->
                         <div class="col-md-6">
-                            <label class="o_label">NOMBRE GENÉRICO</label>
-                            <div class="o_searchable_select">
-                                <input type="text" class="o_input" 
-                                    t-model="state.genericNameSearch"
-                                    t-on-input="filterGenericNames"
-                                    t-on-focus="onGenericNameFocus"
-                                    placeholder="Buscar nombre genérico..."/>
-                                <div t-if="state.showGenericNameDropdown" class="o_dropdown_list">
-                                    <t t-foreach="state.filteredGenericNames" t-as="g" t-key="g.id">
-                                        <div class="o_dropdown_item" t-on-click="() => this.selectGenericName(g)">
-                                            <t t-esc="g.name.toUpperCase()"/>
-                                        </div>
-                                    </t>
-                                    <div t-if="state.filteredGenericNames.length === 0" class="o_dropdown_empty">
-                                        Sin resultados
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Nombre Artístico -->
-                        <div class="col-md-6">
-                            <label class="o_label">NOMBRE ARTÍSTICO</label>
-                            <input type="text" class="o_input" t-model="state.selection.artistic_name" placeholder="Ej: BLANCO CARRARA"/>
+                            <label class="o_label">NOMBRE COMERCIAL</label>
+                            <input type="text" class="o_input" t-model="state.selection.commercial_name" placeholder="Ej: BLANCO CARRARA"/>
                         </div>
 
                         <!-- Acabado -->
                         <div class="col-md-6">
                             <label class="o_label">ACABADO</label>
                             <div class="o_searchable_select">
-                                <input type="text" class="o_input" 
+                                <input type="text" class="o_input"
                                     t-model="state.finishSearch"
                                     t-on-input="filterFinishes"
                                     t-on-focus="onFinishFocus"
@@ -89,7 +67,7 @@
                         <div class="col-md-6">
                             <label class="o_label">ESPESOR</label>
                             <div class="o_searchable_select">
-                                <input type="text" class="o_input" 
+                                <input type="text" class="o_input"
                                     t-model="state.thicknessSearch"
                                     t-on-input="filterThicknesses"
                                     t-on-focus="onThicknessFocus"
@@ -111,7 +89,7 @@
                         <div t-if="state.productType === 'formato'" class="col-md-6">
                             <label class="o_label">DIMENSIÓN</label>
                             <div class="o_searchable_select">
-                                <input type="text" class="o_input" 
+                                <input type="text" class="o_input"
                                     t-model="state.dimensionSearch"
                                     t-on-input="filterDimensions"
                                     t-on-focus="onDimensionFocus"
@@ -129,8 +107,36 @@
                             </div>
                         </div>
 
+                        <!-- Nombre de Origen -->
+                        <div class="col-md-6">
+                            <label class="o_label">NOMBRE DE ORIGEN</label>
+                            <input type="text" class="o_input" t-model="state.selection.origin_name" placeholder="Nombre del proveedor para este producto..."/>
+                        </div>
+
+                        <!-- Proveedor -->
+                        <div class="col-md-6">
+                            <label class="o_label">PROVEEDOR</label>
+                            <div class="o_searchable_select">
+                                <input type="text" class="o_input"
+                                    t-model="state.supplierSearch"
+                                    t-on-input="filterSuppliers"
+                                    t-on-focus="onSupplierFocus"
+                                    placeholder="Buscar proveedor..."/>
+                                <div t-if="state.showSupplierDropdown" class="o_dropdown_list">
+                                    <t t-foreach="state.filteredSuppliers" t-as="s" t-key="s.id">
+                                        <div class="o_dropdown_item" t-on-click="() => this.selectSupplier(s)">
+                                            <t t-esc="s.name"/>
+                                        </div>
+                                    </t>
+                                    <div t-if="state.filteredSuppliers.length === 0" class="o_dropdown_empty">
+                                        Sin resultados
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Categoría -->
-                        <div t-att-class="state.productType === 'formato' ? 'col-md-6' : 'col-12'">
+                        <div class="col-12">
                             <label class="o_label">CATEGORÍA</label>
                             <select class="o_select" t-model="state.selection.category_id">
                                 <option value="">ELIJA CATEGORÍA...</option>

@@ -1,5 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_finish,access_product_finish,model_product_finish,base.group_user,1,1,1,1
-access_product_thickness,access_product_thickness,model_product_thickness,base.group_user,1,1,1,1
-access_product_generic_name,access_product_generic_name,model_product_generic_name,base.group_user,1,1,1,1
-access_product_dimension,access_product_dimension,model_product_dimension,base.group_user,1,1,1,1
+access_product_finish,product.finish.user,model_product_finish,base.group_user,1,0,0,0
+access_product_finish_manager,product.finish.manager,model_product_finish,product_artistic_generator.group_product_generator,1,1,1,1
+access_product_thickness,product.thickness.user,model_product_thickness,base.group_user,1,0,0,0
+access_product_thickness_manager,product.thickness.manager,model_product_thickness,product_artistic_generator.group_product_generator,1,1,1,1
+access_product_dimension,product.dimension.user,model_product_dimension,base.group_user,1,0,0,0
+access_product_dimension_manager,product.dimension.manager,model_product_dimension,product_artistic_generator.group_product_generator,1,1,1,1

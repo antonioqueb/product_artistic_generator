@@ -20,15 +20,6 @@ class ProductThickness(models.Model):
     sequence = fields.Integer(string='Secuencia', default=10)
 
 
-class ProductGenericName(models.Model):
-    _name = 'product.generic.name'
-    _description = 'Nombre Genérico de Producto'
-    _order = 'sequence, name'
-
-    name = fields.Char(string='Nombre Genérico', required=True)
-    sequence = fields.Integer(string='Secuencia', default=10)
-
-
 class ProductDimension(models.Model):
     _name = 'product.dimension'
     _description = 'Dimensión de Producto'
@@ -44,24 +35,26 @@ class ProductTemplate(models.Model):
     @api.model
     def create_artistic_product(self, vals):
         """
-        Crea un producto basado en parámetros artísticos.
+        Crea un producto basado en parámetros.
         Forzando: Mayúsculas, Unidad m2, Seguimiento por Lote y Tipo Almacenable.
         """
         if not self.env.user.has_group('product_artistic_generator.group_product_generator'):
             raise UserError(_("No tiene permisos para generar productos."))
 
-        artistic_name = vals.get('artistic_name', '').strip()
-        generic_name = vals.get('generic_name', '').strip()
+        commercial_name = vals.get('commercial_name', '').strip()
         finish = vals.get('finish', '').strip()
         thickness = vals.get('thickness', '').strip()
         dimension = vals.get('dimension', '').strip()
+        origin_name = vals.get('origin_name', '').strip()
+        supplier_id = vals.get('supplier_id')
 
-        # Construir nombre según tipo (espesor siempre al final)
+        # Construir nombre: NOMBRE_COMERCIAL ACABADO DIMENSION ESPESOR
+        parts = [commercial_name, finish]
         if dimension:
-            full_name = f"{generic_name} {artistic_name} {finish} {dimension} {thickness}".upper()
-        else:
-            full_name = f"{generic_name} {artistic_name} {finish} {thickness}".upper()
+            parts.append(dimension)
+        parts.append(thickness)
 
+        full_name = ' '.join(p for p in parts if p).upper()
         # Limpiar espacios múltiples
         full_name = ' '.join(full_name.split())
 
@@ -83,5 +76,16 @@ class ProductTemplate(models.Model):
             'sale_ok': True,
             'purchase_ok': True,
         })
+
+        # Crear nombre de origen si se proporcionó
+        if origin_name:
+            origin_vals = {
+                'name': origin_name,
+                'product_tmpl_id': product_template.id,
+                'sequence': 10,
+            }
+            if supplier_id:
+                origin_vals['partner_id'] = supplier_id
+            self.env['product.origin.name'].sudo().create(origin_vals)
 
         return product_template.id
