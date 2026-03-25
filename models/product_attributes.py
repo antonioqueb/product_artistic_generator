@@ -74,6 +74,17 @@ class ProductTemplate(models.Model):
         if marca:
             full_name = f"{full_name} - {marca.upper()}"
 
+        # Verificar que no exista un producto con el mismo nombre
+        existing = self.env['product.template'].sudo().search([
+            ('name', '=ilike', full_name)
+        ], limit=1)
+        if existing:
+            raise UserError(_(
+                "Ya existe un producto con el nombre '%(name)s' (ID: %(id)s). "
+                "No se puede crear un producto duplicado.",
+                name=full_name, id=existing.id
+            ))
+
         uom_m2 = self.env.ref('uom.product_uom_m2', raise_if_not_found=False)
         if not uom_m2:
             uom_m2 = self.env['uom.uom'].search([('name', 'ilike', 'm²')], limit=1)
