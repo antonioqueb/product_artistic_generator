@@ -46,6 +46,7 @@ class ProductTemplate(models.Model):
         thickness = vals.get('thickness', '').strip()
         dimension = vals.get('dimension', '').strip()
         color = vals.get('color', '').strip()
+        marca = vals.get('marca', '').strip()
         origin_name = vals.get('origin_name', '').strip()
         supplier_id = vals.get('supplier_id')
         product_type = vals.get('product_type', '')
@@ -82,6 +83,10 @@ class ProductTemplate(models.Model):
         # Escribir x_color si el campo existe y se proporcionó valor
         if color and 'x_color' in self.env['product.template']._fields:
             product_vals['x_color'] = color.upper()
+
+        # Escribir x_marca si el campo existe y se proporcionó valor
+        if marca and 'x_marca' in self.env['product.template']._fields:
+            product_vals['x_marca'] = marca.upper()
 
         product_template = self.env['product.template'].sudo().create(product_vals)
 

@@ -100,6 +100,12 @@
                             <input type="text" class="o_input" t-model="state.selection.color" placeholder="Ej: BLANCO, GRIS, BEIGE..."/>
                         </div>
 
+                        <!-- Marca Comercial (formato y placa sintética) -->
+                        <div t-if="showMarca" class="col-md-6">
+                            <label class="o_label">MARCA COMERCIAL</label>
+                            <input type="text" class="o_input" t-model="state.selection.marca" placeholder="Ej: DEKTON, SILESTONE..."/>
+                        </div>
+
                         <!-- Dimensión (formato y placa sintética) -->
                         <div t-if="showDimension" class="col-md-6">
                             <label class="o_label">DIMENSIÓN</label>

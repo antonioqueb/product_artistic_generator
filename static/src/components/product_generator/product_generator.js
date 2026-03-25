@@ -33,6 +33,7 @@ export class ArtisticGenerator extends Component {
                 commercial_name: '',
                 origin_name: '',
                 color: '',
+                marca: '',
                 finish_id: null,
                 thickness_id: null,
                 dimension_id: null,
@@ -159,6 +160,10 @@ export class ArtisticGenerator extends Component {
         return labels[this.state.productType] || 'NUEVO PRODUCTO';
     }
 
+    get showMarca() {
+        return this.state.productType === 'formato' || this.state.productType === 'placa_sintetica';
+    }
+
     // ---- Navigation ----
 
     async selectType(typeName) {
@@ -181,6 +186,7 @@ export class ArtisticGenerator extends Component {
             commercial_name: '',
             origin_name: '',
             color: '',
+            marca: '',
             finish_id: null,
             thickness_id: null,
             dimension_id: null,
@@ -209,6 +215,7 @@ export class ArtisticGenerator extends Component {
             'commercial_name': this.state.selection.commercial_name,
             'origin_name': this.state.selection.origin_name,
             'color': this.state.selection.color,
+            'marca': this.showMarca ? this.state.selection.marca : '',
             'finish': finish,
             'thickness': thickness,
             'dimension': this.showDimension ? dimension : '',
