@@ -1,6 +1,6 @@
 {
     'name': 'Generador de Productos',
-    'version': '1.1',
+    'version': '1.2',
     'category': 'Inventory',
     'summary': 'Interfaz dinámica para creación de productos con lógica de ramificación',
     'description': """

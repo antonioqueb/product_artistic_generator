@@ -6,15 +6,21 @@
                 <!-- PASO 1: SELECCIÓN DE TIPO -->
                 <div t-if="state.step === 1" class="o_fade_in text-center">
                     <h2 class="o_title">NUEVO PRODUCTO</h2>
-                    <h3 class="mb-4 text-muted">¿ES PLACA O FORMATO?</h3>
-                    <div class="d-flex justify-content-center gap-4">
-                        <div class="o_choice_card" t-on-click="() => this.selectType('Placas')">
+                    <h3 class="mb-4 text-muted">SELECCIONE EL TIPO</h3>
+                    <div class="d-flex justify-content-center gap-4 flex-wrap">
+                        <div class="o_choice_card" t-on-click="() => this.selectType('placa_natural')">
                             <div class="o_icon_placa">
                                 <div class="o_slab"></div>
                             </div>
-                            <span>PLACA</span>
+                            <span>PLACA NATURAL</span>
                         </div>
-                        <div class="o_choice_card" t-on-click="() => this.selectType('Formatos')">
+                        <div class="o_choice_card" t-on-click="() => this.selectType('placa_sintetica')">
+                            <div class="o_icon_placa_sintetica">
+                                <div class="o_slab_sint"></div>
+                            </div>
+                            <span>PLACA SINTÉTICA</span>
+                        </div>
+                        <div class="o_choice_card" t-on-click="() => this.selectType('formato')">
                             <div class="o_icon_formato">
                                 <div class="o_tile"></div>
                                 <div class="o_tile"></div>
@@ -30,10 +36,7 @@
 
                 <!-- PASO 2: FORMULARIO -->
                 <div t-if="state.step === 2" class="o_fade_in">
-                    <h2 class="o_title">
-                        <t t-if="state.productType === 'placa'">NUEVA PLACA</t>
-                        <t t-else="">NUEVO FORMATO</t>
-                    </h2>
+                    <h2 class="o_title"><t t-esc="typeLabel"/></h2>
                     <div class="row g-3">
                         <!-- Nombre de Origen -->
                         <div class="col-md-6">
@@ -97,8 +100,8 @@
                             <input type="text" class="o_input" t-model="state.selection.color" placeholder="Ej: BLANCO, GRIS, BEIGE..."/>
                         </div>
 
-                        <!-- Dimensión (solo para formato) -->
-                        <div t-if="state.productType === 'formato'" class="col-md-6">
+                        <!-- Dimensión (formato y placa sintética) -->
+                        <div t-if="showDimension" class="col-md-6">
                             <label class="o_label">DIMENSIÓN</label>
                             <div class="o_searchable_select">
                                 <input type="text" class="o_input"

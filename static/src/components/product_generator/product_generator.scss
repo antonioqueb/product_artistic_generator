@@ -169,6 +169,18 @@
                     border-radius: 6px;
                     border: 3px solid #8F8F8F;
                     box-shadow: 3px 3px 0 #999;
+
+                    &.o_slab_natural {
+                        background: linear-gradient(135deg, #e8d5b7 0%, #c4a882 40%, #d4b896 70%, #bfa07a 100%);
+                        border-color: #a08060;
+                        box-shadow: 3px 3px 0 #9a7a5a;
+                    }
+
+                    &.o_slab_sintetica {
+                        background: linear-gradient(135deg, #c8d8e8 0%, #9ab0c8 40%, #b0c4d8 70%, #8aa0b8 100%);
+                        border-color: #7090a8;
+                        box-shadow: 3px 3px 0 #6a8a9a;
+                    }
                 }
             }
 
@@ -187,6 +199,42 @@
                 }
             }
 
+            // Icono PLACA SINTÉTICA - Placa con patrón
+            .o_icon_placa_sintetica {
+                width: 80px;
+                height: 65px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .o_slab_sint {
+                    width: 75px;
+                    height: 60px;
+                    background: linear-gradient(135deg, #b8d4e3 0%, #8bb8cc 50%, #a0c8d8 100%);
+                    border-radius: 6px;
+                    border: 3px solid #7aa8b8;
+                    box-shadow: 3px 3px 0 #6998a8;
+                    position: relative;
+                    overflow: hidden;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: repeating-linear-gradient(
+                            45deg,
+                            transparent,
+                            transparent 8px,
+                            rgba(255,255,255,0.15) 8px,
+                            rgba(255,255,255,0.15) 10px
+                        );
+                    }
+                }
+            }
+
             &:hover, &:active {
                 transform: translateY(-10px);
                 border-color: #E4A900;
@@ -196,6 +244,13 @@
                 .o_icon_formato .o_tile {
                     background: linear-gradient(135deg, #f5e6a3 0%, #E4A900 50%, #d4a000 100%);
                     border-color: #c49500;
+                    box-shadow: 3px 3px 0 #b08500;
+                }
+
+                .o_icon_placa_sintetica .o_slab_sint {
+                    background: linear-gradient(135deg, #f5e6a3 0%, #E4A900 50%, #d4a000 100%);
+                    border-color: #c49500;
+                    box-shadow: 3px 3px 0 #b08500;
                 }
             }
         }
@@ -290,36 +345,52 @@
                 font-size: 16px; // Previene zoom en iOS
             }
 
-            // Tarjetas de selección tipo
+            // Tarjetas de selección tipo - 3 tarjetas
             .o_choice_card {
                 width: 100%;
-                max-width: 160px;
-                padding: 30px 20px;
-                gap: 14px;
+                max-width: 130px;
+                padding: 20px 14px;
+                gap: 10px;
 
                 span {
-                    font-size: 1.05rem;
+                    font-size: 0.85rem;
+                    text-align: center;
+                    line-height: 1.2;
                 }
 
                 .o_icon_placa {
-                    width: 60px;
-                    height: 50px;
+                    width: 50px;
+                    height: 42px;
 
                     .o_slab {
-                        width: 55px;
-                        height: 45px;
+                        width: 46px;
+                        height: 38px;
+                    }
+                }
+
+                .o_icon_placa_sintetica {
+                    width: 50px;
+                    height: 42px;
+
+                    .o_slab_sint {
+                        width: 46px;
+                        height: 38px;
                     }
                 }
 
                 .o_icon_formato {
-                    width: 60px;
-                    height: 50px;
-                    gap: 3px;
+                    width: 50px;
+                    height: 42px;
+                    gap: 2px;
                 }
 
                 &:hover, &:active {
                     transform: translateY(-5px);
                 }
+            }
+
+            .d-flex.justify-content-center.gap-4 {
+                gap: 10px !important;
             }
 
             // Forzar columnas a full width en móvil
@@ -391,17 +462,17 @@
             }
 
             .o_choice_card {
-                max-width: 140px;
-                padding: 24px 16px;
-                gap: 10px;
+                max-width: 110px;
+                padding: 16px 10px;
+                gap: 8px;
 
                 span {
-                    font-size: 0.95rem;
+                    font-size: 0.75rem;
                 }
             }
 
             .d-flex.justify-content-center.gap-4 {
-                gap: 10px !important;
+                gap: 6px !important;
             }
         }
     }

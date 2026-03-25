@@ -48,6 +48,7 @@ class ProductTemplate(models.Model):
         color = vals.get('color', '').strip()
         origin_name = vals.get('origin_name', '').strip()
         supplier_id = vals.get('supplier_id')
+        product_type = vals.get('product_type', '')
 
         # Construir nombre: NOMBRE_COMERCIAL ACABADO DIMENSION ESPESOR
         parts = [commercial_name, finish]

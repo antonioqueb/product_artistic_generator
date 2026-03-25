@@ -5,3 +5,5 @@ access_product_thickness,product.thickness.user,model_product_thickness,base.gro
 access_product_thickness_manager,product.thickness.manager,model_product_thickness,product_artistic_generator.group_product_generator,1,1,1,1
 access_product_dimension,product.dimension.user,model_product_dimension,base.group_user,1,0,0,0
 access_product_dimension_manager,product.dimension.manager,model_product_dimension,product_artistic_generator.group_product_generator,1,1,1,1
+access_generator_category_config,generator.category.config.user,model_generator_category_config,base.group_user,1,0,0,0
+access_generator_category_config_manager,generator.category.config.manager,model_generator_category_config,product_artistic_generator.group_product_generator,1,1,1,1
