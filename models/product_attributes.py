@@ -45,6 +45,7 @@ class ProductTemplate(models.Model):
         finish = vals.get('finish', '').strip()
         thickness = vals.get('thickness', '').strip()
         dimension = vals.get('dimension', '').strip()
+        color = vals.get('color', '').strip()
         origin_name = vals.get('origin_name', '').strip()
         supplier_id = vals.get('supplier_id')
 
@@ -65,7 +66,7 @@ class ProductTemplate(models.Model):
         if not uom_m2:
             raise UserError(_("No se encontró la unidad de medida 'm²' en el sistema."))
 
-        product_template = self.env['product.template'].sudo().create({
+        product_vals = {
             'name': full_name,
             'is_storable': True,
             'tracking': 'lot',
@@ -75,7 +76,13 @@ class ProductTemplate(models.Model):
             'list_price': 0.0,
             'sale_ok': True,
             'purchase_ok': True,
-        })
+        }
+
+        # Escribir x_color si el campo existe y se proporcionó valor
+        if color and 'x_color' in self.env['product.template']._fields:
+            product_vals['x_color'] = color.upper()
+
+        product_template = self.env['product.template'].sudo().create(product_vals)
 
         # Crear nombre de origen si se proporcionó y el modelo existe
         if origin_name and 'product.origin.name' in self.env:

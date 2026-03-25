@@ -32,6 +32,7 @@ export class ArtisticGenerator extends Component {
             selection: {
                 commercial_name: '',
                 origin_name: '',
+                color: '',
                 finish_id: null,
                 thickness_id: null,
                 dimension_id: null,
@@ -178,6 +179,7 @@ export class ArtisticGenerator extends Component {
         this.state.selection = {
             commercial_name: '',
             origin_name: '',
+            color: '',
             finish_id: null,
             thickness_id: null,
             dimension_id: null,
@@ -203,6 +205,7 @@ export class ArtisticGenerator extends Component {
         const resId = await this.orm.call("product.template", "create_artistic_product", [{
             'commercial_name': this.state.selection.commercial_name,
             'origin_name': this.state.selection.origin_name,
+            'color': this.state.selection.color,
             'finish': finish,
             'thickness': thickness,
             'dimension': this.state.productType === 'formato' ? dimension : '',
