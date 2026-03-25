@@ -1,6 +1,14 @@
+// Forzar scroll en contenedores padre de Odoo que bloquean overflow
+.o_action_manager .o_action.o_client_action,
+.o_action_manager .o_action {
+    overflow-y: auto !important;
+    height: 100% !important;
+}
+
 .o_artistic_wrapper {
     background-color: #f8f9fa;
     min-height: 100%;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -239,9 +247,22 @@
 // MÓVIL (< 768px)
 // =============================================
 @media (max-width: 767px) {
+    // Forzar scroll en toda la cadena de contenedores Odoo
+    .o_action_manager,
+    .o_action_manager .o_action,
+    .o_action_manager .o_action.o_client_action {
+        overflow-y: auto !important;
+        height: auto !important;
+        min-height: 100% !important;
+    }
+
     .o_artistic_wrapper {
         padding: 12px;
         align-items: flex-start;
+        min-height: auto;
+        height: auto;
+        overflow-y: visible;
+        padding-bottom: 40px;
 
         .o_main_card {
             padding: 28px 20px;
