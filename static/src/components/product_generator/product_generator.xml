@@ -31,6 +31,12 @@
                             </div>
                             <span>FORMATO</span>
                         </div>
+                        <div class="o_choice_card" t-on-click="() => this.selectType('pieza')">
+                            <div class="o_icon_pieza">
+                                <div class="o_cube"></div>
+                            </div>
+                            <span>PIEZA</span>
+                        </div>
                     </div>
                 </div>
 
@@ -50,8 +56,8 @@
                             <input type="text" class="o_input" t-model="state.selection.commercial_name" placeholder="Ej: BLANCO CARRARA"/>
                         </div>
 
-                        <!-- Acabado -->
-                        <div class="col-md-6">
+                        <!-- Acabado (NO pieza) -->
+                        <div t-if="showAcabado" class="col-md-6">
                             <label class="o_label">ACABADO</label>
                             <div class="o_searchable_select">
                                 <input type="text" class="o_input"
@@ -72,8 +78,8 @@
                             </div>
                         </div>
 
-                        <!-- Espesor -->
-                        <div class="col-md-6">
+                        <!-- Espesor (NO pieza) -->
+                        <div t-if="showEspesor" class="col-md-6">
                             <label class="o_label">ESPESOR</label>
                             <div class="o_searchable_select">
                                 <input type="text" class="o_input"
@@ -94,13 +100,13 @@
                             </div>
                         </div>
 
-                        <!-- Color -->
-                        <div class="col-md-6">
+                        <!-- Color (NO pieza) -->
+                        <div t-if="showColor" class="col-md-6">
                             <label class="o_label">COLOR</label>
                             <input type="text" class="o_input" t-model="state.selection.color" placeholder="Ej: BLANCO, GRIS, BEIGE..."/>
                         </div>
 
-                        <!-- Marca Comercial (formato y placa sintética) -->
+                        <!-- Marca Comercial (formato, placa sintética, pieza) -->
                         <div t-if="showMarca" class="col-md-6">
                             <label class="o_label">MARCA COMERCIAL</label>
                             <div class="o_searchable_select">
@@ -122,7 +128,7 @@
                             </div>
                         </div>
 
-                        <!-- Dimensión (formato y placa sintética) -->
+                        <!-- Dimensión (formato y placa sintética, NO pieza) -->
                         <div t-if="showDimension" class="col-md-6">
                             <label class="o_label">DIMENSIÓN</label>
                             <div class="o_searchable_select">

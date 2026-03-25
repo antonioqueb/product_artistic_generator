@@ -11,7 +11,7 @@ export class ArtisticGenerator extends Component {
 
         this.state = useState({
             step: 1,
-            productType: null, // 'placa_natural', 'placa_sintetica', 'formato'
+            productType: null,
             finishes: [],
             thicknesses: [],
             dimensions: [],
@@ -152,7 +152,6 @@ export class ArtisticGenerator extends Component {
         this.state.showSupplierDropdown = false;
     }
 
-    // Brand
     onBrandFocus() {
         this.state.showBrandDropdown = true;
         this.state.brandSearch = '';
@@ -173,10 +172,32 @@ export class ArtisticGenerator extends Component {
         this.state.showBrandDropdown = false;
     }
 
-    // ---- Helpers ----
+    // ---- Helpers: visibilidad por tipo ----
+
+    get isPieza() {
+        return this.state.productType === 'pieza';
+    }
+
+    get showAcabado() {
+        return !this.isPieza;
+    }
+
+    get showEspesor() {
+        return !this.isPieza;
+    }
+
+    get showColor() {
+        return !this.isPieza;
+    }
 
     get showDimension() {
         return this.state.productType === 'formato' || this.state.productType === 'placa_sintetica';
+    }
+
+    get showMarca() {
+        return this.state.productType === 'formato'
+            || this.state.productType === 'placa_sintetica'
+            || this.state.productType === 'pieza';
     }
 
     get typeLabel() {
@@ -184,12 +205,9 @@ export class ArtisticGenerator extends Component {
             'placa_natural': 'NUEVA PLACA NATURAL',
             'placa_sintetica': 'NUEVA PLACA SINTÉTICA',
             'formato': 'NUEVO FORMATO',
+            'pieza': 'NUEVA PIEZA',
         };
         return labels[this.state.productType] || 'NUEVO PRODUCTO';
-    }
-
-    get showMarca() {
-        return this.state.productType === 'formato' || this.state.productType === 'placa_sintetica';
     }
 
     // ---- Navigation ----
@@ -197,7 +215,6 @@ export class ArtisticGenerator extends Component {
     async selectType(typeName) {
         this.state.productType = typeName;
 
-        // Cargar categorías desde configuración
         const categories = await this.orm.call(
             "generator.category.config",
             "get_categories_for_type",
@@ -236,19 +253,27 @@ export class ArtisticGenerator extends Component {
             return;
         }
 
-        const finish = this.state.finishes.find(f => f.id == this.state.selection.finish_id)?.name || '';
-        const thickness = this.state.thicknesses.find(t => t.id == this.state.selection.thickness_id)?.name || '';
-        const dimension = this.state.dimensions.find(d => d.id == this.state.selection.dimension_id)?.name || '';
-        const brand = this.state.brands.find(b => b.id == this.state.selection.brand_id)?.name || '';
+        const finish = this.showAcabado
+            ? (this.state.finishes.find(f => f.id == this.state.selection.finish_id)?.name || '')
+            : '';
+        const thickness = this.showEspesor
+            ? (this.state.thicknesses.find(t => t.id == this.state.selection.thickness_id)?.name || '')
+            : '';
+        const dimension = this.showDimension
+            ? (this.state.dimensions.find(d => d.id == this.state.selection.dimension_id)?.name || '')
+            : '';
+        const brand = this.showMarca
+            ? (this.state.brands.find(b => b.id == this.state.selection.brand_id)?.name || '')
+            : '';
 
         const resId = await this.orm.call("product.template", "create_artistic_product", [{
             'commercial_name': this.state.selection.commercial_name,
             'origin_name': this.state.selection.origin_name,
-            'color': this.state.selection.color,
-            'marca': this.showMarca ? brand : '',
+            'color': this.showColor ? this.state.selection.color : '',
+            'marca': brand,
             'finish': finish,
             'thickness': thickness,
-            'dimension': this.showDimension ? dimension : '',
+            'dimension': dimension,
             'category_id': parseInt(this.state.selection.category_id),
             'supplier_id': this.state.selection.supplier_id || false,
             'product_type': this.state.productType,

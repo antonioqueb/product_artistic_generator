@@ -10,6 +10,7 @@ class GeneratorCategoryConfig(models.Model):
         ('placa_natural', 'Placa Natural'),
         ('placa_sintetica', 'Placa Sintética'),
         ('formato', 'Formato'),
+        ('pieza', 'Pieza'),
     ], string='Tipo de Producto', required=True)
     category_ids = fields.Many2many(
         'product.category',

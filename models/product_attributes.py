@@ -45,7 +45,8 @@ class ProductTemplate(models.Model):
     def create_artistic_product(self, vals):
         """
         Crea un producto basado en parámetros.
-        Forzando: Mayúsculas, Unidad m2, Seguimiento por Lote y Tipo Almacenable.
+        Forzando: Mayúsculas, Seguimiento por Lote y Tipo Almacenable.
+        UdM y x_unidad_del_producto según tipo.
         """
         if not self.env.user.has_group('product_artistic_generator.group_product_generator'):
             raise UserError(_("No tiene permisos para generar productos."))
@@ -60,13 +61,18 @@ class ProductTemplate(models.Model):
         supplier_id = vals.get('supplier_id')
         product_type = vals.get('product_type', '')
 
-        # Construir nombre: NOMBRE_COMERCIAL ACABADO DIMENSION ESPESOR - MARCA
-        parts = [commercial_name, finish]
-        if dimension:
-            parts.append(dimension)
-        parts.append(thickness)
+        # Construir nombre según tipo
+        if product_type == 'pieza':
+            # Pieza: solo NOMBRE_COMERCIAL - MARCA
+            full_name = commercial_name.upper()
+        else:
+            # Placas y formatos: NOMBRE_COMERCIAL ACABADO DIMENSION ESPESOR
+            parts = [commercial_name, finish]
+            if dimension:
+                parts.append(dimension)
+            parts.append(thickness)
+            full_name = ' '.join(p for p in parts if p).upper()
 
-        full_name = ' '.join(p for p in parts if p).upper()
         # Limpiar espacios múltiples
         full_name = ' '.join(full_name.split())
 
@@ -85,27 +91,47 @@ class ProductTemplate(models.Model):
                 name=full_name, id=existing.id
             ))
 
-        uom_m2 = self.env.ref('uom.product_uom_m2', raise_if_not_found=False)
-        if not uom_m2:
-            uom_m2 = self.env['uom.uom'].search([('name', 'ilike', 'm²')], limit=1)
+        # Determinar UdM según tipo
+        if product_type == 'pieza':
+            uom = self.env.ref('uom.product_uom_unit', raise_if_not_found=False)
+            if not uom:
+                uom = self.env['uom.uom'].search([('name', 'ilike', 'Unidades')], limit=1)
+            if not uom:
+                raise UserError(_("No se encontró la unidad de medida 'Unidades' en el sistema."))
+        else:
+            uom = self.env.ref('uom.product_uom_m2', raise_if_not_found=False)
+            if not uom:
+                uom = self.env['uom.uom'].search([('name', 'ilike', 'm²')], limit=1)
+            if not uom:
+                raise UserError(_("No se encontró la unidad de medida 'm²' en el sistema."))
 
-        if not uom_m2:
-            raise UserError(_("No se encontró la unidad de medida 'm²' en el sistema."))
+        # Determinar x_unidad_del_producto
+        unidad_map = {
+            'placa_natural': 'Placa',
+            'placa_sintetica': 'Placa',
+            'formato': 'Formato',
+            'pieza': 'Pieza',
+        }
 
         product_vals = {
             'name': full_name,
             'is_storable': True,
             'tracking': 'lot',
             'categ_id': vals.get('category_id'),
-            'uom_id': uom_m2.id,
+            'uom_id': uom.id,
             'purchase_method': 'purchase',
             'list_price': 0.0,
             'sale_ok': True,
             'purchase_ok': True,
         }
 
-        # Escribir x_color si el campo existe y se proporcionó valor
-        if color and 'x_color' in self.env['product.template']._fields:
+        # Escribir x_unidad_del_producto si el campo existe
+        unidad_valor = unidad_map.get(product_type, '')
+        if unidad_valor and 'x_unidad_del_producto' in self.env['product.template']._fields:
+            product_vals['x_unidad_del_producto'] = unidad_valor
+
+        # Escribir x_color si el campo existe y se proporcionó valor (no aplica a pieza)
+        if color and product_type != 'pieza' and 'x_color' in self.env['product.template']._fields:
             product_vals['x_color'] = color.upper()
 
         # Escribir x_marca si el campo existe y se proporcionó valor
