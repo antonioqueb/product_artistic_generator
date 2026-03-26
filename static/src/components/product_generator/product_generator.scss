@@ -23,6 +23,7 @@
         box-shadow: 0 15px 50px rgba(113, 75, 103, 0.18);
         width: 100%;
         max-width: 900px;
+        margin-bottom: 40px;
 
         .o_title {
             color: #714B67;
@@ -310,14 +311,49 @@
 }
 
 // =============================================
-// TABLET (768px - 1024px)
+// PANTALLAS WEB PEQUEÑAS (768px - 1024px)
 // =============================================
-@media (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
+    .o_action_manager,
+    .o_action_manager .o_action,
+    .o_action_manager .o_action.o_client_action {
+        overflow-y: auto !important;
+    }
+
     .o_artistic_wrapper {
         padding: 24px;
 
         .o_main_card {
             padding: 40px 36px;
+
+            .o_choice_card {
+                width: 180px;
+                padding: 35px 25px;
+                gap: 14px;
+
+                span {
+                    font-size: 1.05rem;
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// PANTALLAS WEB MEDIANAS-PEQUEÑAS (1025px - 1280px)
+// =============================================
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .o_action_manager,
+    .o_action_manager .o_action,
+    .o_action_manager .o_action.o_client_action {
+        overflow-y: auto !important;
+    }
+
+    .o_artistic_wrapper {
+        padding: 30px;
+
+        .o_main_card {
+            padding: 45px 50px;
         }
     }
 }
