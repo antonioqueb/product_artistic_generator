@@ -12,46 +12,46 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 20px;
+    padding: 16px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 
     .o_main_card {
         background: white;
-        padding: 30px 40px;
-        border-radius: 14px;
-        box-shadow: 0 10px 35px rgba(113, 75, 103, 0.15);
+        padding: 24px 32px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(113, 75, 103, 0.14);
         width: 100%;
-        max-width: 720px;
-        margin-bottom: 20px;
+        max-width: 620px;
+        margin-bottom: 16px;
 
         .o_title {
             color: #714B67;
             font-weight: 700;
-            font-size: 1.3rem;
-            margin-bottom: 20px;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
             text-align: center;
             border-bottom: 2px solid #f1f1f1;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
 
         .o_primary_color { color: #714B67; }
 
         .o_label {
-            font-size: 0.75rem;
+            font-size: 0.68rem;
             font-weight: 800;
             color: #8F8F8F;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             display: block;
         }
 
         .o_input, .o_select {
             border: 2px solid #eee;
-            border-radius: 8px;
-            padding: 8px 12px;
+            border-radius: 7px;
+            padding: 7px 10px;
             width: 100%;
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             transition: all 0.3s;
             @media (max-width: 767px) {
                 font-size: 16px;
@@ -74,21 +74,21 @@
                 background: white;
                 border: 2px solid #eee;
                 border-top: none;
-                border-radius: 0 0 8px 8px;
-                max-height: 200px;
+                border-radius: 0 0 7px 7px;
+                max-height: 180px;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
                 z-index: 100;
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
 
                 .o_dropdown_item {
-                    padding: 8px 12px;
+                    padding: 6px 10px;
                     cursor: pointer;
                     font-weight: 600;
-                    font-size: 0.85rem;
+                    font-size: 0.78rem;
                     @media (max-width: 767px) {
-                        padding: 12px 14px;
-                        min-height: 44px;
+                        padding: 10px 12px;
+                        min-height: 40px;
                         display: flex;
                         align-items: center;
                     }
@@ -103,10 +103,10 @@
                 }
 
                 .o_dropdown_empty {
-                    padding: 8px 12px;
+                    padding: 6px 10px;
                     color: #999;
                     font-style: italic;
-                    font-size: 0.85rem;
+                    font-size: 0.78rem;
                 }
             }
         }
@@ -115,10 +115,10 @@
             background-color: #714B67;
             color: white;
             border: none;
-            padding: 10px 28px;
-            border-radius: 8px;
+            padding: 8px 24px;
+            border-radius: 7px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
             &:hover { background-color: #5a3c52; }
             &:active { background-color: #4a2f42; }
@@ -128,10 +128,10 @@
             background-color: #21B799;
             color: white;
             border: none;
-            padding: 10px 28px;
-            border-radius: 8px;
+            padding: 8px 24px;
+            border-radius: 7px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
             &:hover { background-color: #1a927a; }
             &:active { background-color: #15806a; }
@@ -139,32 +139,32 @@
 
         .o_choice_card {
             border: 2px solid #eee;
-            padding: 24px 20px;
-            border-radius: 12px;
-            width: 150px;
+            padding: 20px 16px;
+            border-radius: 10px;
+            width: 128px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
 
             span {
                 font-weight: 700;
                 color: #714B67;
-                font-size: 0.85rem;
+                font-size: 0.75rem;
             }
 
             .o_icon_placa {
-                width: 55px;
-                height: 45px;
+                width: 46px;
+                height: 38px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
                 .o_slab {
-                    width: 50px;
-                    height: 40px;
+                    width: 42px;
+                    height: 34px;
                     background: linear-gradient(135deg, #d4d4d4 0%, #a8a8a8 50%, #c0c0c0 100%);
                     border-radius: 4px;
                     border: 2px solid #8F8F8F;
@@ -185,12 +185,12 @@
             }
 
             .o_icon_formato {
-                width: 55px;
-                height: 45px;
+                width: 46px;
+                height: 38px;
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: repeat(2, 1fr);
-                gap: 3px;
+                gap: 2px;
 
                 .o_tile {
                     background: linear-gradient(135deg, #d4d4d4 0%, #a8a8a8 50%, #c0c0c0 100%);
@@ -200,15 +200,15 @@
             }
 
             .o_icon_placa_sintetica {
-                width: 55px;
-                height: 45px;
+                width: 46px;
+                height: 38px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
                 .o_slab_sint {
-                    width: 50px;
-                    height: 40px;
+                    width: 42px;
+                    height: 34px;
                     background: linear-gradient(135deg, #b8d4e3 0%, #8bb8cc 50%, #a0c8d8 100%);
                     border-radius: 4px;
                     border: 2px solid #7aa8b8;
@@ -226,35 +226,35 @@
                         background: repeating-linear-gradient(
                             45deg,
                             transparent,
-                            transparent 6px,
-                            rgba(255,255,255,0.15) 6px,
-                            rgba(255,255,255,0.15) 8px
+                            transparent 5px,
+                            rgba(255,255,255,0.15) 5px,
+                            rgba(255,255,255,0.15) 7px
                         );
                     }
                 }
             }
 
             .o_icon_pieza {
-                width: 55px;
-                height: 45px;
+                width: 46px;
+                height: 38px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
                 .o_cube {
-                    width: 36px;
-                    height: 36px;
+                    width: 30px;
+                    height: 30px;
                     background: linear-gradient(135deg, #c8b8d8 0%, #a090b8 50%, #b8a8c8 100%);
-                    border-radius: 6px;
+                    border-radius: 5px;
                     border: 2px solid #9080a8;
                     box-shadow: 2px 2px 0 #807098;
                 }
             }
 
             &:hover, &:active {
-                transform: translateY(-6px);
+                transform: translateY(-5px);
                 border-color: #E4A900;
-                box-shadow: 0 8px 20px rgba(228, 169, 0, 0.2);
+                box-shadow: 0 7px 18px rgba(228, 169, 0, 0.2);
 
                 .o_icon_placa .o_slab,
                 .o_icon_formato .o_tile {
@@ -278,31 +278,31 @@
         }
 
         h3 {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
         }
 
         .btn-secondary {
-            padding: 10px 28px;
+            padding: 8px 24px;
             font-weight: 700;
-            font-size: 0.9rem;
-            border-radius: 8px;
+            font-size: 0.8rem;
+            border-radius: 7px;
         }
 
         .btn-link {
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-weight: 600;
         }
 
         .row.g-3 {
-            row-gap: 0.8rem !important;
+            row-gap: 0.6rem !important;
         }
 
         .mt-4 {
-            margin-top: 1.5rem !important;
+            margin-top: 1.2rem !important;
         }
 
         .mb-4 {
-            margin-bottom: 1.2rem !important;
+            margin-bottom: 1rem !important;
         }
     }
 }
@@ -318,18 +318,18 @@
     }
 
     .o_artistic_wrapper {
-        padding: 16px;
+        padding: 14px;
 
         .o_main_card {
-            padding: 24px 28px;
+            padding: 20px 24px;
 
             .o_choice_card {
-                width: 140px;
-                padding: 20px 16px;
-                gap: 10px;
+                width: 120px;
+                padding: 16px 12px;
+                gap: 8px;
 
                 span {
-                    font-size: 0.8rem;
+                    font-size: 0.72rem;
                 }
             }
         }
@@ -347,10 +347,10 @@
     }
 
     .o_artistic_wrapper {
-        padding: 20px;
+        padding: 16px;
 
         .o_main_card {
-            padding: 28px 36px;
+            padding: 24px 30px;
         }
     }
 }
@@ -368,99 +368,99 @@
     }
 
     .o_artistic_wrapper {
-        padding: 10px;
+        padding: 8px;
         align-items: flex-start;
         min-height: auto;
         height: auto;
         overflow-y: visible;
-        padding-bottom: 30px;
+        padding-bottom: 24px;
 
         .o_main_card {
-            padding: 20px 16px;
-            border-radius: 12px;
-            box-shadow: 0 6px 24px rgba(113, 75, 103, 0.12);
+            padding: 16px 14px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(113, 75, 103, 0.12);
 
             .o_title {
-                font-size: 1.1rem;
-                margin-bottom: 14px;
-                padding-bottom: 10px;
+                font-size: 0.95rem;
+                margin-bottom: 12px;
+                padding-bottom: 8px;
             }
 
             h3 {
-                font-size: 0.95rem;
+                font-size: 0.82rem;
             }
 
             .o_label {
-                font-size: 0.7rem;
-                margin-bottom: 3px;
+                font-size: 0.62rem;
+                margin-bottom: 2px;
             }
 
             .o_input, .o_select {
-                padding: 10px 12px;
-                border-radius: 7px;
+                padding: 8px 10px;
+                border-radius: 6px;
                 font-size: 16px;
             }
 
             .o_choice_card {
-                width: calc(50% - 6px);
-                max-width: 140px;
-                padding: 16px 10px;
-                gap: 8px;
+                width: calc(50% - 5px);
+                max-width: 120px;
+                padding: 14px 8px;
+                gap: 6px;
 
                 span {
-                    font-size: 0.75rem;
+                    font-size: 0.65rem;
                     text-align: center;
                     line-height: 1.2;
                 }
 
                 .o_icon_placa {
-                    width: 42px;
-                    height: 34px;
+                    width: 36px;
+                    height: 28px;
 
                     .o_slab {
-                        width: 38px;
-                        height: 30px;
+                        width: 32px;
+                        height: 26px;
                     }
                 }
 
                 .o_icon_placa_sintetica {
-                    width: 42px;
-                    height: 34px;
+                    width: 36px;
+                    height: 28px;
 
                     .o_slab_sint {
-                        width: 38px;
-                        height: 30px;
+                        width: 32px;
+                        height: 26px;
                     }
                 }
 
                 .o_icon_formato {
-                    width: 42px;
-                    height: 34px;
+                    width: 36px;
+                    height: 28px;
                     gap: 2px;
                 }
 
                 .o_icon_pieza {
-                    width: 42px;
-                    height: 34px;
+                    width: 36px;
+                    height: 28px;
 
                     .o_cube {
-                        width: 30px;
-                        height: 30px;
+                        width: 26px;
+                        height: 26px;
                     }
                 }
 
                 &:hover, &:active {
-                    transform: translateY(-4px);
+                    transform: translateY(-3px);
                 }
             }
 
             .d-flex.justify-content-center.gap-4 {
-                gap: 8px !important;
+                gap: 6px !important;
                 flex-wrap: wrap;
             }
 
             .row.g-3 {
-                row-gap: 0.6rem !important;
+                row-gap: 0.5rem !important;
 
                 .col-md-6 {
                     flex: 0 0 100%;
@@ -471,15 +471,15 @@
             .o_btn_primary,
             .o_btn_success,
             .btn-secondary {
-                padding: 10px 20px;
-                font-size: 0.85rem;
+                padding: 8px 18px;
+                font-size: 0.78rem;
                 width: 100%;
                 text-align: center;
             }
 
             .d-flex.justify-content-between.mt-4 {
                 flex-direction: column-reverse;
-                gap: 10px;
+                gap: 8px;
 
                 .btn-secondary,
                 .o_btn_success {
@@ -488,16 +488,16 @@
             }
 
             .o_searchable_select .o_dropdown_list {
-                max-height: 180px;
-                border-radius: 0 0 7px 7px;
+                max-height: 160px;
+                border-radius: 0 0 6px 6px;
             }
 
             .mt-4 {
-                margin-top: 1rem !important;
+                margin-top: 0.8rem !important;
             }
 
             .mb-4 {
-                margin-bottom: 0.8rem !important;
+                margin-bottom: 0.7rem !important;
             }
         }
     }
@@ -508,34 +508,34 @@
 // =============================================
 @media (max-width: 399px) {
     .o_artistic_wrapper {
-        padding: 6px;
+        padding: 5px;
 
         .o_main_card {
-            padding: 16px 12px;
-            border-radius: 8px;
+            padding: 14px 10px;
+            border-radius: 7px;
 
             .o_title {
-                font-size: 1rem;
-                margin-bottom: 12px;
+                font-size: 0.85rem;
+                margin-bottom: 10px;
             }
 
             h3 {
-                font-size: 0.85rem;
+                font-size: 0.75rem;
             }
 
             .o_choice_card {
-                width: calc(50% - 4px);
-                max-width: 120px;
-                padding: 12px 6px;
-                gap: 5px;
+                width: calc(50% - 3px);
+                max-width: 105px;
+                padding: 10px 5px;
+                gap: 4px;
 
                 span {
-                    font-size: 0.65rem;
+                    font-size: 0.58rem;
                 }
             }
 
             .d-flex.justify-content-center.gap-4 {
-                gap: 6px !important;
+                gap: 5px !important;
                 flex-wrap: wrap;
             }
         }
