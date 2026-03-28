@@ -12,55 +12,54 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 40px;
+    padding: 20px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 
     .o_main_card {
         background: white;
-        padding: 60px 70px;
-        border-radius: 20px;
-        box-shadow: 0 15px 50px rgba(113, 75, 103, 0.18);
+        padding: 30px 40px;
+        border-radius: 14px;
+        box-shadow: 0 10px 35px rgba(113, 75, 103, 0.15);
         width: 100%;
-        max-width: 900px;
-        margin-bottom: 40px;
+        max-width: 720px;
+        margin-bottom: 20px;
 
         .o_title {
             color: #714B67;
             font-weight: 700;
-            font-size: 2rem;
-            margin-bottom: 35px;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
             text-align: center;
-            border-bottom: 3px solid #f1f1f1;
-            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 12px;
         }
 
         .o_primary_color { color: #714B67; }
 
         .o_label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 800;
             color: #8F8F8F;
-            margin-bottom: 10px;
+            margin-bottom: 4px;
             display: block;
         }
 
         .o_input, .o_select {
             border: 2px solid #eee;
-            border-radius: 10px;
-            padding: 16px 18px;
+            border-radius: 8px;
+            padding: 8px 12px;
             width: 100%;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 0.875rem;
             transition: all 0.3s;
-            // Prevenir zoom en iOS al hacer focus
             @media (max-width: 767px) {
                 font-size: 16px;
             }
             &:focus {
                 border-color: #017E84;
                 outline: none;
-                box-shadow: 0 0 0 4px rgba(1, 126, 132, 0.1);
+                box-shadow: 0 0 0 3px rgba(1, 126, 132, 0.1);
             }
         }
 
@@ -75,22 +74,21 @@
                 background: white;
                 border: 2px solid #eee;
                 border-top: none;
-                border-radius: 0 0 10px 10px;
-                max-height: 250px;
+                border-radius: 0 0 8px 8px;
+                max-height: 200px;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
                 z-index: 100;
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 
                 .o_dropdown_item {
-                    padding: 14px 18px;
+                    padding: 8px 12px;
                     cursor: pointer;
                     font-weight: 600;
-                    font-size: 1rem;
-                    // Área táctil más grande en móvil
+                    font-size: 0.85rem;
                     @media (max-width: 767px) {
-                        padding: 16px 18px;
-                        min-height: 48px;
+                        padding: 12px 14px;
+                        min-height: 44px;
                         display: flex;
                         align-items: center;
                     }
@@ -105,9 +103,10 @@
                 }
 
                 .o_dropdown_empty {
-                    padding: 14px 18px;
+                    padding: 8px 12px;
                     color: #999;
                     font-style: italic;
+                    font-size: 0.85rem;
                 }
             }
         }
@@ -116,10 +115,10 @@
             background-color: #714B67;
             color: white;
             border: none;
-            padding: 16px 40px;
-            border-radius: 10px;
+            padding: 10px 28px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             &:hover { background-color: #5a3c52; }
             &:active { background-color: #4a2f42; }
@@ -129,10 +128,10 @@
             background-color: #21B799;
             color: white;
             border: none;
-            padding: 16px 40px;
-            border-radius: 10px;
+            padding: 10px 28px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             &:hover { background-color: #1a927a; }
             &:active { background-color: #15806a; }
@@ -140,81 +139,80 @@
 
         .o_choice_card {
             border: 2px solid #eee;
-            padding: 50px 40px;
-            border-radius: 16px;
-            width: 220px;
+            padding: 24px 20px;
+            border-radius: 12px;
+            width: 150px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
 
             span {
                 font-weight: 700;
                 color: #714B67;
-                font-size: 1.2rem;
+                font-size: 0.85rem;
             }
 
             .o_icon_placa {
-                width: 80px;
-                height: 65px;
+                width: 55px;
+                height: 45px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
                 .o_slab {
-                    width: 75px;
-                    height: 60px;
+                    width: 50px;
+                    height: 40px;
                     background: linear-gradient(135deg, #d4d4d4 0%, #a8a8a8 50%, #c0c0c0 100%);
-                    border-radius: 6px;
-                    border: 3px solid #8F8F8F;
-                    box-shadow: 3px 3px 0 #999;
+                    border-radius: 4px;
+                    border: 2px solid #8F8F8F;
+                    box-shadow: 2px 2px 0 #999;
 
                     &.o_slab_natural {
                         background: linear-gradient(135deg, #e8d5b7 0%, #c4a882 40%, #d4b896 70%, #bfa07a 100%);
                         border-color: #a08060;
-                        box-shadow: 3px 3px 0 #9a7a5a;
+                        box-shadow: 2px 2px 0 #9a7a5a;
                     }
 
                     &.o_slab_sintetica {
                         background: linear-gradient(135deg, #c8d8e8 0%, #9ab0c8 40%, #b0c4d8 70%, #8aa0b8 100%);
                         border-color: #7090a8;
-                        box-shadow: 3px 3px 0 #6a8a9a;
+                        box-shadow: 2px 2px 0 #6a8a9a;
                     }
                 }
             }
 
             .o_icon_formato {
-                width: 80px;
-                height: 65px;
+                width: 55px;
+                height: 45px;
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: repeat(2, 1fr);
-                gap: 4px;
+                gap: 3px;
 
                 .o_tile {
                     background: linear-gradient(135deg, #d4d4d4 0%, #a8a8a8 50%, #c0c0c0 100%);
-                    border-radius: 3px;
-                    border: 2px solid #8F8F8F;
+                    border-radius: 2px;
+                    border: 1.5px solid #8F8F8F;
                 }
             }
 
-            // Icono PLACA SINTÉTICA - Placa con patrón
             .o_icon_placa_sintetica {
-                width: 80px;
-                height: 65px;
+                width: 55px;
+                height: 45px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
                 .o_slab_sint {
-                    width: 75px;
-                    height: 60px;
+                    width: 50px;
+                    height: 40px;
                     background: linear-gradient(135deg, #b8d4e3 0%, #8bb8cc 50%, #a0c8d8 100%);
-                    border-radius: 6px;
-                    border: 3px solid #7aa8b8;
-                    box-shadow: 3px 3px 0 #6998a8;
+                    border-radius: 4px;
+                    border: 2px solid #7aa8b8;
+                    box-shadow: 2px 2px 0 #6998a8;
                     position: relative;
                     overflow: hidden;
 
@@ -228,84 +226,83 @@
                         background: repeating-linear-gradient(
                             45deg,
                             transparent,
-                            transparent 8px,
-                            rgba(255,255,255,0.15) 8px,
-                            rgba(255,255,255,0.15) 10px
+                            transparent 6px,
+                            rgba(255,255,255,0.15) 6px,
+                            rgba(255,255,255,0.15) 8px
                         );
                     }
                 }
             }
 
-            // Icono PIEZA - Cubo
             .o_icon_pieza {
-                width: 80px;
-                height: 65px;
+                width: 55px;
+                height: 45px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
                 .o_cube {
-                    width: 50px;
-                    height: 50px;
+                    width: 36px;
+                    height: 36px;
                     background: linear-gradient(135deg, #c8b8d8 0%, #a090b8 50%, #b8a8c8 100%);
-                    border-radius: 8px;
-                    border: 3px solid #9080a8;
-                    box-shadow: 3px 3px 0 #807098;
+                    border-radius: 6px;
+                    border: 2px solid #9080a8;
+                    box-shadow: 2px 2px 0 #807098;
                 }
             }
 
             &:hover, &:active {
-                transform: translateY(-10px);
+                transform: translateY(-6px);
                 border-color: #E4A900;
-                box-shadow: 0 12px 30px rgba(228, 169, 0, 0.25);
+                box-shadow: 0 8px 20px rgba(228, 169, 0, 0.2);
 
                 .o_icon_placa .o_slab,
                 .o_icon_formato .o_tile {
                     background: linear-gradient(135deg, #f5e6a3 0%, #E4A900 50%, #d4a000 100%);
                     border-color: #c49500;
-                    box-shadow: 3px 3px 0 #b08500;
+                    box-shadow: 2px 2px 0 #b08500;
                 }
 
                 .o_icon_placa_sintetica .o_slab_sint {
                     background: linear-gradient(135deg, #f5e6a3 0%, #E4A900 50%, #d4a000 100%);
                     border-color: #c49500;
-                    box-shadow: 3px 3px 0 #b08500;
+                    box-shadow: 2px 2px 0 #b08500;
                 }
 
                 .o_icon_pieza .o_cube {
                     background: linear-gradient(135deg, #f5e6a3 0%, #E4A900 50%, #d4a000 100%);
                     border-color: #c49500;
-                    box-shadow: 3px 3px 0 #b08500;
+                    box-shadow: 2px 2px 0 #b08500;
                 }
             }
         }
 
         h3 {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
         }
 
         .btn-secondary {
-            padding: 16px 40px;
+            padding: 10px 28px;
             font-weight: 700;
-            font-size: 1.1rem;
-            border-radius: 10px;
+            font-size: 0.9rem;
+            border-radius: 8px;
         }
 
         .btn-link {
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 600;
         }
 
         .row.g-3 {
-            row-gap: 1.5rem !important;
+            row-gap: 0.8rem !important;
         }
 
         .mt-4 {
-            margin-top: 2.5rem !important;
+            margin-top: 1.5rem !important;
         }
 
         .mb-4 {
-            margin-bottom: 2rem !important;
+            margin-bottom: 1.2rem !important;
         }
     }
 }
@@ -321,18 +318,18 @@
     }
 
     .o_artistic_wrapper {
-        padding: 24px;
+        padding: 16px;
 
         .o_main_card {
-            padding: 40px 36px;
+            padding: 24px 28px;
 
             .o_choice_card {
-                width: 180px;
-                padding: 35px 25px;
-                gap: 14px;
+                width: 140px;
+                padding: 20px 16px;
+                gap: 10px;
 
                 span {
-                    font-size: 1.05rem;
+                    font-size: 0.8rem;
                 }
             }
         }
@@ -350,10 +347,10 @@
     }
 
     .o_artistic_wrapper {
-        padding: 30px;
+        padding: 20px;
 
         .o_main_card {
-            padding: 45px 50px;
+            padding: 28px 36px;
         }
     }
 }
@@ -362,7 +359,6 @@
 // MÓVIL (< 768px)
 // =============================================
 @media (max-width: 767px) {
-    // Forzar scroll en toda la cadena de contenedores Odoo
     .o_action_manager,
     .o_action_manager .o_action,
     .o_action_manager .o_action.o_client_action {
@@ -372,101 +368,99 @@
     }
 
     .o_artistic_wrapper {
-        padding: 12px;
+        padding: 10px;
         align-items: flex-start;
         min-height: auto;
         height: auto;
         overflow-y: visible;
-        padding-bottom: 40px;
+        padding-bottom: 30px;
 
         .o_main_card {
-            padding: 28px 20px;
-            border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(113, 75, 103, 0.14);
+            padding: 20px 16px;
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(113, 75, 103, 0.12);
 
             .o_title {
-                font-size: 1.4rem;
-                margin-bottom: 20px;
-                padding-bottom: 14px;
+                font-size: 1.1rem;
+                margin-bottom: 14px;
+                padding-bottom: 10px;
             }
 
             h3 {
-                font-size: 1.15rem;
+                font-size: 0.95rem;
             }
 
             .o_label {
-                font-size: 0.8rem;
-                margin-bottom: 6px;
+                font-size: 0.7rem;
+                margin-bottom: 3px;
             }
 
             .o_input, .o_select {
-                padding: 13px 14px;
-                border-radius: 8px;
-                font-size: 16px; // Previene zoom en iOS
+                padding: 10px 12px;
+                border-radius: 7px;
+                font-size: 16px;
             }
 
-            // Tarjetas de selección tipo - 4 tarjetas en grid 2x2
             .o_choice_card {
                 width: calc(50% - 6px);
-                max-width: 160px;
-                padding: 20px 14px;
-                gap: 10px;
+                max-width: 140px;
+                padding: 16px 10px;
+                gap: 8px;
 
                 span {
-                    font-size: 0.85rem;
+                    font-size: 0.75rem;
                     text-align: center;
                     line-height: 1.2;
                 }
 
                 .o_icon_placa {
-                    width: 50px;
-                    height: 42px;
+                    width: 42px;
+                    height: 34px;
 
                     .o_slab {
-                        width: 46px;
-                        height: 38px;
+                        width: 38px;
+                        height: 30px;
                     }
                 }
 
                 .o_icon_placa_sintetica {
-                    width: 50px;
-                    height: 42px;
+                    width: 42px;
+                    height: 34px;
 
                     .o_slab_sint {
-                        width: 46px;
-                        height: 38px;
+                        width: 38px;
+                        height: 30px;
                     }
                 }
 
                 .o_icon_formato {
-                    width: 50px;
-                    height: 42px;
+                    width: 42px;
+                    height: 34px;
                     gap: 2px;
                 }
 
                 .o_icon_pieza {
-                    width: 50px;
-                    height: 42px;
+                    width: 42px;
+                    height: 34px;
 
                     .o_cube {
-                        width: 38px;
-                        height: 38px;
+                        width: 30px;
+                        height: 30px;
                     }
                 }
 
                 &:hover, &:active {
-                    transform: translateY(-5px);
+                    transform: translateY(-4px);
                 }
             }
 
             .d-flex.justify-content-center.gap-4 {
-                gap: 10px !important;
+                gap: 8px !important;
                 flex-wrap: wrap;
             }
 
-            // Forzar columnas a full width en móvil
             .row.g-3 {
-                row-gap: 1rem !important;
+                row-gap: 0.6rem !important;
 
                 .col-md-6 {
                     flex: 0 0 100%;
@@ -474,20 +468,18 @@
                 }
             }
 
-            // Botones
             .o_btn_primary,
             .o_btn_success,
             .btn-secondary {
-                padding: 14px 24px;
-                font-size: 1rem;
+                padding: 10px 20px;
+                font-size: 0.85rem;
                 width: 100%;
                 text-align: center;
             }
 
-            // Stack de botones en móvil
             .d-flex.justify-content-between.mt-4 {
                 flex-direction: column-reverse;
-                gap: 12px;
+                gap: 10px;
 
                 .btn-secondary,
                 .o_btn_success {
@@ -495,18 +487,17 @@
                 }
             }
 
-            // Dropdown ajustado
             .o_searchable_select .o_dropdown_list {
-                max-height: 200px;
-                border-radius: 0 0 8px 8px;
+                max-height: 180px;
+                border-radius: 0 0 7px 7px;
             }
 
             .mt-4 {
-                margin-top: 1.5rem !important;
+                margin-top: 1rem !important;
             }
 
             .mb-4 {
-                margin-bottom: 1.2rem !important;
+                margin-bottom: 0.8rem !important;
             }
         }
     }
@@ -517,29 +508,29 @@
 // =============================================
 @media (max-width: 399px) {
     .o_artistic_wrapper {
-        padding: 8px;
+        padding: 6px;
 
         .o_main_card {
-            padding: 20px 14px;
-            border-radius: 10px;
+            padding: 16px 12px;
+            border-radius: 8px;
 
             .o_title {
-                font-size: 1.2rem;
-                margin-bottom: 16px;
+                font-size: 1rem;
+                margin-bottom: 12px;
             }
 
             h3 {
-                font-size: 1rem;
+                font-size: 0.85rem;
             }
 
             .o_choice_card {
                 width: calc(50% - 4px);
-                max-width: 140px;
-                padding: 14px 8px;
-                gap: 6px;
+                max-width: 120px;
+                padding: 12px 6px;
+                gap: 5px;
 
                 span {
-                    font-size: 0.7rem;
+                    font-size: 0.65rem;
                 }
             }
 
@@ -563,7 +554,6 @@
     to { opacity: 1; transform: translateX(0); }
 }
 
-// Reducir animación en móvil para rendimiento
 @media (max-width: 767px) {
     .o_fade_in {
         animation: fadeInUp 0.3s ease-out;
