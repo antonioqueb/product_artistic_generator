@@ -1,6 +1,6 @@
 {
     'name': 'Generador de Productos',
-    'version': '1.2',
+    'version': '1.3',
     'category': 'Inventory',
     'summary': 'Interfaz dinámica para creación de productos con lógica de ramificación',
     'description': """
@@ -12,7 +12,7 @@ Módulo avanzado para la creación dinámica de productos basados en atributos.
     'website': 'https://www.alphaqueb.com',
     'license': 'AGPL-3',
 
-    'depends': ['base', 'stock', 'purchase', 'product'],
+    'depends': ['base', 'stock', 'purchase', 'product', 'stock_lot_dimensions'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

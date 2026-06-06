@@ -63,7 +63,7 @@ class ProductTemplate(models.Model):
 
         # Construir nombre según tipo
         if product_type == 'pieza':
-            # Pieza: solo NOMBRE_COMERCIAL - MARCA
+            # Pieza: solo NOMBRE_COMERCIAL - MARCA (sin palabra de tipo)
             full_name = commercial_name.upper()
         else:
             # Placas y formatos: NOMBRE_COMERCIAL ACABADO DIMENSION ESPESOR
@@ -72,6 +72,10 @@ class ProductTemplate(models.Model):
                 parts.append(dimension)
             parts.append(thickness)
             full_name = ' '.join(p for p in parts if p).upper()
+            # Solo las placas llevan la palabra "PLACA" en el nombre.
+            # Los formatos no añaden palabra de tipo al nombre.
+            if product_type in ('placa_natural', 'placa_sintetica'):
+                full_name = f"PLACA {full_name}"
 
         # Limpiar espacios múltiples
         full_name = ' '.join(full_name.split())
@@ -125,18 +129,39 @@ class ProductTemplate(models.Model):
             'purchase_ok': True,
         }
 
-        # Escribir x_unidad_del_producto si el campo existe
+        # Propagar los atributos a los campos de product.template definidos en
+        # el módulo stock_lot_dimensions (pestaña "Atributos"). Cada campo se
+        # escribe solo si existe en el modelo, para no romper si ese módulo no
+        # estuviera instalado.
+        tmpl_fields = self.env['product.template']._fields
+
+        # Unidad del Producto: SIEMPRE se llena según el tipo
+        # (Placa / Formato / Pieza).
         unidad_valor = unidad_map.get(product_type, '')
-        if unidad_valor and 'x_unidad_del_producto' in self.env['product.template']._fields:
+        if unidad_valor and 'x_unidad_del_producto' in tmpl_fields:
             product_vals['x_unidad_del_producto'] = unidad_valor
 
-        # Escribir x_color si el campo existe y se proporcionó valor (no aplica a pieza)
-        if color and product_type != 'pieza' and 'x_color' in self.env['product.template']._fields:
+        # Color Estándar (no aplica a pieza)
+        if color and product_type != 'pieza' and 'x_color' in tmpl_fields:
             product_vals['x_color'] = color.upper()
 
-        # Escribir x_marca si el campo existe y se proporcionó valor
-        if marca and 'x_marca' in self.env['product.template']._fields:
+        # Marca Comercial
+        if marca and 'x_marca' in tmpl_fields:
             product_vals['x_marca'] = marca.upper()
+
+        # Acabado Superficial (no aplica a pieza)
+        if finish and product_type != 'pieza' and 'x_acabado' in tmpl_fields:
+            product_vals['x_acabado'] = finish.upper()
+
+        # Grosor Nominal (no aplica a pieza)
+        if thickness and product_type != 'pieza' and 'x_grosor' in tmpl_fields:
+            product_vals['x_grosor'] = thickness.upper()
+
+        # Dimensiones = dimensión + grosor (no aplica a pieza)
+        if product_type != 'pieza' and 'x_dimensiones' in tmpl_fields:
+            dim_parts = [p for p in (dimension, thickness) if p]
+            if dim_parts:
+                product_vals['x_dimensiones'] = ' '.join(dim_parts).upper()
 
         product_template = self.env['product.template'].sudo().create(product_vals)
 
