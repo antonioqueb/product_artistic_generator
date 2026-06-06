@@ -66,16 +66,16 @@ class ProductTemplate(models.Model):
             # Pieza: solo NOMBRE_COMERCIAL - MARCA (sin palabra de tipo)
             full_name = commercial_name.upper()
         else:
-            # Placas y formatos: NOMBRE_COMERCIAL ACABADO DIMENSION ESPESOR
+            # Placas y formatos: NOMBRE_COMERCIAL ACABADO DIMENSION [PLACA] ESPESOR
             parts = [commercial_name, finish]
             if dimension:
                 parts.append(dimension)
+            # Solo las placas llevan la palabra "PLACA" en el nombre, justo
+            # antes del grosor. Los formatos no añaden palabra de tipo.
+            if product_type in ('placa_natural', 'placa_sintetica'):
+                parts.append('PLACA')
             parts.append(thickness)
             full_name = ' '.join(p for p in parts if p).upper()
-            # Solo las placas llevan la palabra "PLACA" en el nombre.
-            # Los formatos no añaden palabra de tipo al nombre.
-            if product_type in ('placa_natural', 'placa_sintetica'):
-                full_name = f"PLACA {full_name}"
 
         # Limpiar espacios múltiples
         full_name = ' '.join(full_name.split())
