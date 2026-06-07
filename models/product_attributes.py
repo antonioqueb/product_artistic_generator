@@ -2,8 +2,59 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
+class GeneratorAttributeMixin(models.AbstractModel):
+    """Comportamiento común de los atributos del generador.
+
+    - Regla de oro: el nombre SIEMPRE se guarda en MAYÚSCULAS, sin importar
+      desde dónde se cree (vista de configuración o alta rápida del generador).
+    - Alta rápida (quick_create_from_generator): crea el registro desde la
+      interfaz del generador y lo devuelve listo para quedar seleccionado, sin
+      necesidad de refrescar.
+    """
+    _name = 'generator.attribute.mixin'
+    _description = 'Atributo del Generador (mayúsculas + alta rápida)'
+
+    @api.model
+    def _normalize_name(self, name):
+        """Normaliza el nombre. Por defecto: mayúsculas y sin espacios extra."""
+        return ' '.join((name or '').upper().split())
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name'):
+                vals['name'] = self._normalize_name(vals['name'])
+        return super().create(vals_list)
+
+    def write(self, vals):
+        if vals.get('name'):
+            vals['name'] = self._normalize_name(vals['name'])
+        return super().write(vals)
+
+    @api.model
+    def quick_create_from_generator(self, name):
+        """Crea (o reutiliza) un atributo desde el generador y lo devuelve.
+
+        Devuelve {'id', 'name'} con el nombre ya normalizado para que el
+        front-end lo deje seleccionado de inmediato.
+        """
+        if not self.env.user.has_group('product_artistic_generator.group_product_generator'):
+            raise UserError(_("No tiene permisos para crear atributos."))
+
+        normalized = self._normalize_name(name)
+        if not normalized:
+            raise UserError(_("El valor no puede estar vacío."))
+
+        # Reutilizar si ya existe (sin distinguir mayúsculas) para no duplicar.
+        record = self.sudo().search([('name', '=ilike', normalized)], limit=1)
+        if not record:
+            record = self.sudo().create({'name': normalized})
+        return {'id': record.id, 'name': record.name}
+
+
 class ProductFinish(models.Model):
     _name = 'product.finish'
+    _inherit = 'generator.attribute.mixin'
     _description = 'Acabado de Producto'
     _order = 'sequence, name'
 
@@ -13,6 +64,7 @@ class ProductFinish(models.Model):
 
 class ProductThickness(models.Model):
     _name = 'product.thickness'
+    _inherit = 'generator.attribute.mixin'
     _description = 'Espesor de Producto'
     _order = 'sequence, name'
 
@@ -22,15 +74,26 @@ class ProductThickness(models.Model):
 
 class ProductDimension(models.Model):
     _name = 'product.dimension'
+    _inherit = 'generator.attribute.mixin'
     _description = 'Dimensión de Producto'
     _order = 'sequence, name'
 
     name = fields.Char(string='Dimensión', required=True)
     sequence = fields.Integer(string='Secuencia', default=10)
 
+    @api.model
+    def _normalize_name(self, name):
+        """Las dimensiones siempre terminan en ' X' (espacio + X) por el
+        formato en el que se usan. Se evita duplicar el sufijo."""
+        normalized = ' '.join((name or '').upper().split())
+        while normalized.endswith(' X'):
+            normalized = normalized[:-2].rstrip()
+        return f"{normalized} X" if normalized else normalized
+
 
 class ProductBrand(models.Model):
     _name = 'product.brand'
+    _inherit = 'generator.attribute.mixin'
     _description = 'Marca Comercial de Producto'
     _order = 'sequence, name'
 

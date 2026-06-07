@@ -71,8 +71,11 @@
                                             <t t-esc="f.name.toUpperCase()"/>
                                         </div>
                                     </t>
-                                    <div t-if="state.filteredFinishes.length === 0" class="o_dropdown_empty">
+                                    <div t-if="state.filteredFinishes.length === 0 &amp;&amp; !canCreateFinish" class="o_dropdown_empty">
                                         Sin resultados
+                                    </div>
+                                    <div t-if="canCreateFinish" class="o_dropdown_create" t-on-click="createFinish">
+                                        <i class="fa fa-plus me-2"/>Crear "<t t-esc="state.finishSearch.trim().toUpperCase()"/>"
                                     </div>
                                 </div>
                             </div>
@@ -93,8 +96,11 @@
                                             <t t-esc="t.name.toUpperCase()"/>
                                         </div>
                                     </t>
-                                    <div t-if="state.filteredThicknesses.length === 0" class="o_dropdown_empty">
+                                    <div t-if="state.filteredThicknesses.length === 0 &amp;&amp; !canCreateThickness" class="o_dropdown_empty">
                                         Sin resultados
+                                    </div>
+                                    <div t-if="canCreateThickness" class="o_dropdown_create" t-on-click="createThickness">
+                                        <i class="fa fa-plus me-2"/>Crear "<t t-esc="state.thicknessSearch.trim().toUpperCase()"/>"
                                     </div>
                                 </div>
                             </div>
@@ -121,8 +127,11 @@
                                             <t t-esc="b.name.toUpperCase()"/>
                                         </div>
                                     </t>
-                                    <div t-if="state.filteredBrands.length === 0" class="o_dropdown_empty">
+                                    <div t-if="state.filteredBrands.length === 0 &amp;&amp; !canCreateBrand" class="o_dropdown_empty">
                                         Sin resultados
+                                    </div>
+                                    <div t-if="canCreateBrand" class="o_dropdown_create" t-on-click="createBrand">
+                                        <i class="fa fa-plus me-2"/>Crear "<t t-esc="state.brandSearch.trim().toUpperCase()"/>"
                                     </div>
                                 </div>
                             </div>
@@ -143,8 +152,11 @@
                                             <t t-esc="d.name.toUpperCase()"/>
                                         </div>
                                     </t>
-                                    <div t-if="state.filteredDimensions.length === 0" class="o_dropdown_empty">
+                                    <div t-if="state.filteredDimensions.length === 0 &amp;&amp; !canCreateDimension" class="o_dropdown_empty">
                                         Sin resultados
+                                    </div>
+                                    <div t-if="canCreateDimension" class="o_dropdown_create" t-on-click="createDimension">
+                                        <i class="fa fa-plus me-2"/>Crear "<t t-esc="state.dimensionSearch.trim().toUpperCase()"/> X"
                                     </div>
                                 </div>
                             </div>

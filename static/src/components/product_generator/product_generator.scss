@@ -108,6 +108,28 @@
                     font-style: italic;
                     font-size: 0.78rem;
                 }
+
+                .o_dropdown_create {
+                    padding: 8px 10px;
+                    cursor: pointer;
+                    font-weight: 700;
+                    font-size: 0.78rem;
+                    color: #017E84;
+                    border-top: 1px solid #eee;
+                    background: #f7fcfc;
+                    display: flex;
+                    align-items: center;
+                    @media (max-width: 767px) {
+                        padding: 12px;
+                        min-height: 44px;
+                    }
+                    &:hover {
+                        background: #e0f0f0;
+                    }
+                    &:active {
+                        background: #d0e8e8;
+                    }
+                }
             }
         }
 

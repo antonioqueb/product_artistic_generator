@@ -172,6 +172,76 @@ export class ArtisticGenerator extends Component {
         this.state.showBrandDropdown = false;
     }
 
+    // ---- Alta rápida de atributos (crear sin salir del generador) ----
+
+    /**
+     * Crea (o reutiliza) un atributo en el servidor y lo devuelve normalizado
+     * en MAYÚSCULAS. No requiere refrescar: el registro se agrega al estado
+     * local y queda seleccionado de inmediato.
+     */
+    async _quickCreate(model, value) {
+        const name = (value || '').trim();
+        if (!name) return null;
+        return await this.orm.call(model, "quick_create_from_generator", [name]);
+    }
+
+    _exists(list, value) {
+        const v = (value || '').trim().toUpperCase();
+        return !!v && list.some(item => (item.name || '').toUpperCase() === v);
+    }
+
+    get canCreateFinish() {
+        return !!this.state.finishSearch.trim() && !this._exists(this.state.finishes, this.state.finishSearch);
+    }
+    async createFinish() {
+        const rec = await this._quickCreate("product.finish", this.state.finishSearch);
+        if (!rec) return;
+        if (!this.state.finishes.some(f => f.id === rec.id)) {
+            this.state.finishes.push(rec);
+        }
+        this.state.filteredFinishes = [...this.state.finishes];
+        this.selectFinish(rec);
+    }
+
+    get canCreateThickness() {
+        return !!this.state.thicknessSearch.trim() && !this._exists(this.state.thicknesses, this.state.thicknessSearch);
+    }
+    async createThickness() {
+        const rec = await this._quickCreate("product.thickness", this.state.thicknessSearch);
+        if (!rec) return;
+        if (!this.state.thicknesses.some(t => t.id === rec.id)) {
+            this.state.thicknesses.push(rec);
+        }
+        this.state.filteredThicknesses = [...this.state.thicknesses];
+        this.selectThickness(rec);
+    }
+
+    get canCreateDimension() {
+        return !!this.state.dimensionSearch.trim() && !this._exists(this.state.dimensions, this.state.dimensionSearch);
+    }
+    async createDimension() {
+        const rec = await this._quickCreate("product.dimension", this.state.dimensionSearch);
+        if (!rec) return;
+        if (!this.state.dimensions.some(d => d.id === rec.id)) {
+            this.state.dimensions.push(rec);
+        }
+        this.state.filteredDimensions = [...this.state.dimensions];
+        this.selectDimension(rec);
+    }
+
+    get canCreateBrand() {
+        return !!this.state.brandSearch.trim() && !this._exists(this.state.brands, this.state.brandSearch);
+    }
+    async createBrand() {
+        const rec = await this._quickCreate("product.brand", this.state.brandSearch);
+        if (!rec) return;
+        if (!this.state.brands.some(b => b.id === rec.id)) {
+            this.state.brands.push(rec);
+        }
+        this.state.filteredBrands = [...this.state.brands];
+        this.selectBrand(rec);
+    }
+
     // ---- Helpers: visibilidad por tipo ----
 
     get isPieza() {
