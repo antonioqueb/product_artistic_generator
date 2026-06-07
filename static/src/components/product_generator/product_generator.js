@@ -216,8 +216,20 @@ export class ArtisticGenerator extends Component {
         this.selectThickness(rec);
     }
 
+    /**
+     * Replica la normalización del servidor para previsualizar la dimensión:
+     * '10x20' -> '10 X 20 X'. Mantiene la vista alineada con lo que se guarda.
+     */
+    get dimensionCreateLabel() {
+        let s = this.state.dimensionSearch.trim().toUpperCase().replace(/\s+/g, ' ');
+        if (!s) return '';
+        s = s.replace(/\s*X\s*/g, 'X').replace(/X+$/g, '');
+        const partes = s.split('X').filter(Boolean);
+        return partes.length ? partes.join(' X ') + ' X' : 'X';
+    }
     get canCreateDimension() {
-        return !!this.state.dimensionSearch.trim() && !this._exists(this.state.dimensions, this.state.dimensionSearch);
+        const label = this.dimensionCreateLabel;
+        return !!label && !this.state.dimensions.some(d => (d.name || '').toUpperCase() === label);
     }
     async createDimension() {
         const rec = await this._quickCreate("product.dimension", this.state.dimensionSearch);

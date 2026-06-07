@@ -1,3 +1,5 @@
+import re
+
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
@@ -83,12 +85,30 @@ class ProductDimension(models.Model):
 
     @api.model
     def _normalize_name(self, name):
-        """Las dimensiones siempre terminan en ' X' (espacio + X) por el
-        formato en el que se usan. Se evita duplicar el sufijo."""
-        normalized = ' '.join((name or '').upper().split())
-        while normalized.endswith(' X'):
-            normalized = normalized[:-2].rstrip()
-        return f"{normalized} X" if normalized else normalized
+        """Normaliza la dimensión al formato 'MEDIDA X MEDIDA X':
+
+        - Mayúsculas y sin espacios extra.
+        - Cada separador entre medidas queda como ' X ' (con espacios), aunque
+          el usuario lo escriba pegado: '10x20' -> '10 X 20 X'.
+        - Siempre termina en ' X' (espacio + X), sin duplicar el sufijo.
+
+        Ejemplos:
+            '10x20'      -> '10 X 20 X'
+            '10 X 20 X'  -> '10 X 20 X'   (se respeta)
+            '1.20x2.40'  -> '1.20 X 2.40 X'
+            '60'         -> '60 X'
+        """
+        s = ' '.join((name or '').upper().split())
+        if not s:
+            return s
+        # Compactar cada separador 'X' (con o sin espacios) a una sola 'X'.
+        s = re.sub(r'\s*X\s*', 'X', s)
+        # Quitar las 'X' finales: el sufijo se re-agrega al final.
+        s = s.rstrip('X')
+        partes = [p for p in s.split('X') if p]
+        if not partes:
+            return 'X'
+        return ' X '.join(partes) + ' X'
 
 
 class ProductBrand(models.Model):

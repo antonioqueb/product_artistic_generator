@@ -156,7 +156,7 @@
                                         Sin resultados
                                     </div>
                                     <div t-if="canCreateDimension" class="o_dropdown_create" t-on-click="createDimension">
-                                        <i class="fa fa-plus me-2"/>Crear "<t t-esc="state.dimensionSearch.trim().toUpperCase()"/> X"
+                                        <i class="fa fa-plus me-2"/>Crear "<t t-esc="dimensionCreateLabel"/>"
                                     </div>
                                 </div>
                             </div>
