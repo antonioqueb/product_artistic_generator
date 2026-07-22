@@ -248,6 +248,29 @@ class ProductTemplate(models.Model):
 
         product_template = self.env['product.template'].sudo().create(product_vals)
 
+        # Empaques estándar definidos desde el generador: se propagan al
+        # listado de standard.pack (módulo standard_pack_som). Múltiples
+        # líneas permitidas; exactamente UNA queda como default.
+        standard_packs = vals.get('standard_packs') or []
+        if standard_packs and 'standard.pack' in self.env:
+            Pack = self.env['standard.pack'].sudo()
+            valid = [
+                p for p in standard_packs
+                if p.get('pack_type_id') and float(p.get('qty_per_pack') or 0) > 0
+            ]
+            if valid and not any(p.get('is_default') for p in valid):
+                valid[0]['is_default'] = True
+            seq = 10
+            for p in valid:
+                Pack.create({
+                    'product_tmpl_id': product_template.id,
+                    'pack_type_id': int(p['pack_type_id']),
+                    'qty_per_pack': float(p['qty_per_pack']),
+                    'is_default': bool(p.get('is_default')),
+                    'sequence': seq,
+                })
+                seq += 10
+
         # Crear nombre de origen si se proporcionó y el modelo existe
         if origin_name and 'product.origin.name' in self.env:
             origin_vals = {

@@ -33,6 +33,11 @@ export class ArtisticGenerator extends Component {
             supplierSearch: '',
             brandSearch: '',
             subCategories: [],
+            // Empaque estandarizado (standard_pack_som): opcional, multilínea
+            packModuleAvailable: false,
+            packTypes: [],
+            hasStandardPack: false,
+            packLines: [],
             selection: {
                 commercial_name: '',
                 origin_name: '',
@@ -52,6 +57,15 @@ export class ArtisticGenerator extends Component {
             this.state.dimensions = await this.orm.searchRead("product.dimension", [], ["name"]);
             this.state.suppliers = await this.orm.searchRead("res.partner", [['supplier_rank', '>', 0]], ["name"]);
             this.state.brands = await this.orm.searchRead("product.brand", [], ["name"]);
+            try {
+                this.state.packTypes = await this.orm.searchRead(
+                    "standard.pack.type", [], ["name", "icon"], { order: "sequence" }
+                );
+                this.state.packModuleAvailable = this.state.packTypes.length > 0;
+            } catch (e) {
+                // standard_pack_som no instalado: la sección no se muestra.
+                this.state.packModuleAvailable = false;
+            }
             this.state.filteredFinishes = [...this.state.finishes];
             this.state.filteredThicknesses = [...this.state.thicknesses];
             this.state.filteredDimensions = [...this.state.dimensions];
@@ -325,6 +339,48 @@ export class ArtisticGenerator extends Component {
         this.state.dimensionSearch = '';
         this.state.supplierSearch = '';
         this.state.brandSearch = '';
+        this.state.hasStandardPack = false;
+        this.state.packLines = [];
+    }
+
+    // ---- Empaque estandarizado ----
+
+    togglePack(ev) {
+        this.state.hasStandardPack = ev.target.checked;
+        if (this.state.hasStandardPack && this.state.packLines.length === 0) {
+            this.addPackLine();
+        }
+    }
+
+    addPackLine() {
+        this.state.packLines.push({
+            pack_type_id: this.state.packTypes.length === 1 ? String(this.state.packTypes[0].id) : "",
+            qty_per_pack: "",
+            is_default: this.state.packLines.length === 0,
+        });
+    }
+
+    removePackLine(index) {
+        const wasDefault = this.state.packLines[index] && this.state.packLines[index].is_default;
+        this.state.packLines.splice(index, 1);
+        if (wasDefault && this.state.packLines.length) {
+            this.state.packLines[0].is_default = true;
+        }
+    }
+
+    setDefaultPack(index) {
+        this.state.packLines.forEach((l, i) => { l.is_default = i === index; });
+    }
+
+    get validPackLines() {
+        return this.state.packLines.filter(
+            l => l.pack_type_id && parseFloat(l.qty_per_pack) > 0
+        );
+    }
+
+    packTypeName(id) {
+        const t = this.state.packTypes.find(pt => String(pt.id) === String(id));
+        return t ? t.name.toUpperCase() : "";
     }
 
     // ---- Create ----
@@ -332,6 +388,14 @@ export class ArtisticGenerator extends Component {
     async createProduct() {
         if (!this.state.selection.category_id) {
             this.notification.add("Debe elegir una categoría final", { type: 'danger' });
+            return;
+        }
+
+        if (this.state.hasStandardPack && this.validPackLines.length === 0) {
+            this.notification.add(
+                "Marcaste 'Contiene empaque estandarizado': define al menos un empaque con tipo y cantidad.",
+                { type: 'danger' }
+            );
             return;
         }
 
@@ -359,6 +423,13 @@ export class ArtisticGenerator extends Component {
             'category_id': parseInt(this.state.selection.category_id),
             'supplier_id': this.state.selection.supplier_id || false,
             'product_type': this.state.productType,
+            'standard_packs': this.state.hasStandardPack
+                ? this.validPackLines.map(l => ({
+                    pack_type_id: parseInt(l.pack_type_id),
+                    qty_per_pack: parseFloat(l.qty_per_pack),
+                    is_default: !!l.is_default,
+                }))
+                : [],
         }]);
 
         this.notification.add("¡Producto generado exitosamente!", { type: 'success' });

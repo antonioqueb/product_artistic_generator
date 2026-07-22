@@ -586,3 +586,79 @@
         to { opacity: 1; transform: translateY(0); }
     }
 }
+/* ═══ Empaque estandarizado (standard_pack_som) — mismo branding ═══ */
+.o_artistic_generator {
+    .o_pack_section {
+        border: 1.5px dashed #c9c1b8;
+        border-radius: 10px;
+        padding: 14px 16px;
+        background: #faf8f5;
+        margin-top: 4px;
+    }
+    .o_pack_toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        margin: 0;
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #59473d;
+            cursor: pointer;
+        }
+        .o_pack_hint { font-size: 11px; color: #8a8178; font-style: italic; }
+    }
+    .o_pack_lines { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .o_pack_line {
+        display: grid;
+        grid-template-columns: 1fr 200px 40px 40px;
+        gap: 8px;
+        align-items: center;
+        .o_select, .o_input { margin: 0; }
+    }
+    .o_pack_default,
+    .o_pack_remove {
+        border: 1px solid #d8d2ca;
+        background: #fff;
+        border-radius: 8px;
+        height: 38px;
+        cursor: pointer;
+        color: #b3aca3;
+        transition: all 0.15s ease;
+    }
+    .o_pack_default:hover { color: #d97706; border-color: #d97706; }
+    .o_pack_default.active { color: #d97706; border-color: #d97706; background: #fff7ed; }
+    .o_pack_remove:hover { color: #dc2626; border-color: #dc2626; background: #fef2f2; }
+    .o_pack_add {
+        align-self: flex-start;
+        border: 1.5px dashed #59473d;
+        background: transparent;
+        color: #59473d;
+        border-radius: 8px;
+        padding: 7px 14px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        &:hover { background: #59473d; color: #fff; }
+    }
+    .o_pack_preview {
+        font-size: 12px;
+        color: #6b6259;
+        padding-top: 6px;
+        border-top: 1px solid #e8e2da;
+        .o_pack_chip {
+            display: inline-block;
+            background: #59473d;
+            color: #fff;
+            border-radius: 999px;
+            padding: 2px 10px;
+            margin: 2px 3px;
+            font-size: 11px;
+            font-weight: 600;
+            .fa-star { color: #fbbf24; }
+        }
+    }
+}

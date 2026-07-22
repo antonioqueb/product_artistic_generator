@@ -194,6 +194,58 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Empaque estandarizado (standard_pack_som) -->
+                        <div t-if="state.packModuleAvailable" class="col-12">
+                            <div class="o_pack_section">
+                                <label class="o_pack_toggle">
+                                    <input type="checkbox" t-att-checked="state.hasStandardPack" t-on-change="togglePack"/>
+                                    <span class="o_label mb-0">CONTIENE EMPAQUE ESTANDARIZADO</span>
+                                    <span class="o_pack_hint">El material se vende por paquete (caja, palet, atado…)</span>
+                                </label>
+
+                                <div t-if="state.hasStandardPack" class="o_pack_lines">
+                                    <t t-foreach="state.packLines" t-as="line" t-key="line_index">
+                                        <div class="o_pack_line">
+                                            <select class="o_select" t-model="line.pack_type_id">
+                                                <option value="">TIPO DE EMPAQUE...</option>
+                                                <t t-foreach="state.packTypes" t-as="pt" t-key="pt.id">
+                                                    <option t-att-value="pt.id"><t t-esc="pt.name.toUpperCase()"/></option>
+                                                </t>
+                                            </select>
+                                            <input type="number" class="o_input" min="0" step="any"
+                                                   t-model="line.qty_per_pack"
+                                                   placeholder="CANT. POR EMPAQUE"/>
+                                            <button type="button"
+                                                    t-att-class="'o_pack_default' + (line.is_default ? ' active' : '')"
+                                                    t-on-click="() => this.setDefaultPack(line_index)"
+                                                    title="Empaque por defecto en ventas">
+                                                <i class="fa fa-star"/>
+                                            </button>
+                                            <button type="button" class="o_pack_remove"
+                                                    t-on-click="() => this.removePackLine(line_index)"
+                                                    title="Quitar empaque">
+                                                <i class="fa fa-trash"/>
+                                            </button>
+                                        </div>
+                                    </t>
+
+                                    <button type="button" class="o_pack_add" t-on-click="addPackLine">
+                                        <i class="fa fa-plus me-2"/>AGREGAR OTRO EMPAQUE
+                                    </button>
+
+                                    <div t-if="validPackLines.length" class="o_pack_preview">
+                                        <i class="fa fa-cube me-1"/>
+                                        Se crearán <strong><t t-esc="validPackLines.length"/></strong> empaque(s):
+                                        <t t-foreach="validPackLines" t-as="vl" t-key="vl_index">
+                                            <span class="o_pack_chip">
+                                                <t t-esc="packTypeName(vl.pack_type_id)"/> × <t t-esc="vl.qty_per_pack"/>
+                                                <i t-if="vl.is_default" class="fa fa-star ms-1"/>
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-between mt-4">
                         <button class="btn btn-secondary" t-on-click="goBackToType">VOLVER</button>
