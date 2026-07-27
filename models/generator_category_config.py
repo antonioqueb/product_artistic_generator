@@ -20,10 +20,12 @@ class GeneratorCategoryConfig(models.Model):
         string='Categorías Disponibles',
     )
 
-    _sql_constraints = [
-        ('product_type_unique', 'unique(product_type)',
-         'Ya existe una configuración para este tipo de producto.')
-    ]
+    # Odoo 19: models.Constraint reemplaza a _sql_constraints (que ya no se
+    # aplica).
+    _product_type_unique = models.Constraint(
+        'unique(product_type)',
+        'Ya existe una configuración para este tipo de producto.',
+    )
 
     @api.model
     def get_categories_for_type(self, product_type):
