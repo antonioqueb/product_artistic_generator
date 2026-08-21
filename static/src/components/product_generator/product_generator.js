@@ -33,6 +33,14 @@ export class ArtisticGenerator extends Component {
             supplierSearch: '',
             brandSearch: '',
             subCategories: [],
+            // Procedencia OBLIGATORIA: nacional (país México por defecto) o
+            // importado (país a elegir, sin IVA de compra).
+            procedencia: null,
+            countries: [],
+            filteredCountries: [],
+            showCountryDropdown: false,
+            countrySearch: '',
+            mexicoId: null,
             // Empaque estandarizado (standard_pack_som): opcional, multilínea
             packModuleAvailable: false,
             packTypes: [],
@@ -47,7 +55,8 @@ export class ArtisticGenerator extends Component {
                 thickness_id: null,
                 dimension_id: null,
                 supplier_id: null,
-                category_id: null
+                category_id: null,
+                origin_country_id: null
             }
         });
 
@@ -57,6 +66,11 @@ export class ArtisticGenerator extends Component {
             this.state.dimensions = await this.orm.searchRead("product.dimension", [], ["name"]);
             this.state.suppliers = await this.orm.searchRead("res.partner", [['supplier_rank', '>', 0]], ["name"]);
             this.state.brands = await this.orm.searchRead("product.brand", [], ["name"]);
+            this.state.countries = await this.orm.searchRead(
+                "res.country", [], ["name", "code"], { order: "name" });
+            const mx = this.state.countries.find((c) => c.code === "MX");
+            this.state.mexicoId = mx ? mx.id : null;
+            this.state.filteredCountries = [...this.state.countries];
             try {
                 this.state.packTypes = await this.orm.searchRead(
                     "standard.pack.type", [], ["name", "icon"], { order: "sequence" }
@@ -80,8 +94,46 @@ export class ArtisticGenerator extends Component {
                 this.state.showDimensionDropdown = false;
                 this.state.showSupplierDropdown = false;
                 this.state.showBrandDropdown = false;
+                this.state.showCountryDropdown = false;
             }
         });
+    }
+
+    // ---- Procedencia (nacional / importado) + país de origen ----
+
+    setProcedencia(value) {
+        this.state.procedencia = value;
+        if (value === 'nacional') {
+            // Nacional: país México por defecto (editable).
+            this.state.selection.origin_country_id = this.state.mexicoId;
+            const mx = this.state.countries.find((c) => c.id === this.state.mexicoId);
+            this.state.countrySearch = mx ? mx.name.toUpperCase() : 'MÉXICO';
+        } else {
+            // Importado: el país se elige a fuerza.
+            this.state.selection.origin_country_id = null;
+            this.state.countrySearch = '';
+        }
+        this.state.showCountryDropdown = false;
+    }
+
+    onCountryFocus() {
+        this.state.showCountryDropdown = true;
+        this.state.countrySearch = '';
+        this.state.filteredCountries = [...this.state.countries];
+    }
+    filterCountries(ev) {
+        const val = ev.target.value;
+        this.state.countrySearch = val;
+        this.state.filteredCountries = this.state.countries.filter((c) =>
+            c.name.toLowerCase().includes(val.toLowerCase())
+        );
+        this.state.showCountryDropdown = true;
+        this.state.selection.origin_country_id = null;
+    }
+    selectCountry(c) {
+        this.state.selection.origin_country_id = c.id;
+        this.state.countrySearch = c.name.toUpperCase();
+        this.state.showCountryDropdown = false;
     }
 
     // ---- Searchable dropdown handlers ----
@@ -332,8 +384,11 @@ export class ArtisticGenerator extends Component {
             thickness_id: null,
             dimension_id: null,
             supplier_id: null,
-            category_id: null
+            category_id: null,
+            origin_country_id: null
         };
+        this.state.procedencia = null;
+        this.state.countrySearch = '';
         this.state.finishSearch = '';
         this.state.thicknessSearch = '';
         this.state.dimensionSearch = '';
@@ -391,6 +446,22 @@ export class ArtisticGenerator extends Component {
             return;
         }
 
+        if (!this.state.procedencia) {
+            this.notification.add(
+                "Debe indicar si el producto es NACIONAL o IMPORTADO.",
+                { type: 'danger' });
+            return;
+        }
+
+        if (!this.state.selection.origin_country_id) {
+            this.notification.add(
+                this.state.procedencia === 'importado'
+                    ? "Producto importado: debe elegir el país de origen."
+                    : "Debe indicar el país de origen.",
+                { type: 'danger' });
+            return;
+        }
+
         if (this.state.hasStandardPack && this.validPackLines.length === 0) {
             this.notification.add(
                 "Marcaste 'Contiene empaque estandarizado': define al menos un empaque con tipo y cantidad.",
@@ -423,6 +494,8 @@ export class ArtisticGenerator extends Component {
             'category_id': parseInt(this.state.selection.category_id),
             'supplier_id': this.state.selection.supplier_id || false,
             'product_type': this.state.productType,
+            'procedencia': this.state.procedencia,
+            'origin_country_id': this.state.selection.origin_country_id || false,
             'standard_packs': this.state.hasStandardPack
                 ? this.validPackLines.map(l => ({
                     pack_type_id: parseInt(l.pack_type_id),

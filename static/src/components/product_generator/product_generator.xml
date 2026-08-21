@@ -173,6 +173,48 @@
                             </select>
                         </div>
 
+                        <!-- Procedencia OBLIGATORIA: nacional / importado -->
+                        <div class="col-md-6">
+                            <label class="o_label">PROCEDENCIA *</label>
+                            <div class="o_procedencia_btns">
+                                <button type="button"
+                                        t-attf-class="o_procedencia_btn #{state.procedencia === 'nacional' ? 'active' : ''}"
+                                        t-on-click="() => this.setProcedencia('nacional')">
+                                    NACIONAL
+                                </button>
+                                <button type="button"
+                                        t-attf-class="o_procedencia_btn #{state.procedencia === 'importado' ? 'active' : ''}"
+                                        t-on-click="() => this.setProcedencia('importado')">
+                                    IMPORTADO
+                                </button>
+                            </div>
+                            <small t-if="state.procedencia === 'importado'" class="o_procedencia_hint">
+                                Importado: elige el país de origen. El producto se creará SIN IVA de compra.
+                            </small>
+                        </div>
+
+                        <!-- País de origen (México por defecto en nacional) -->
+                        <div class="col-md-6" t-if="state.procedencia">
+                            <label class="o_label">PAÍS DE ORIGEN *</label>
+                            <div class="o_searchable_select">
+                                <input type="text" class="o_input"
+                                    t-model="state.countrySearch"
+                                    t-on-input="filterCountries"
+                                    t-on-focus="onCountryFocus"
+                                    placeholder="Buscar país..."/>
+                                <div t-if="state.showCountryDropdown" class="o_dropdown_list">
+                                    <t t-foreach="state.filteredCountries" t-as="c" t-key="c.id">
+                                        <div class="o_dropdown_item" t-on-click="() => this.selectCountry(c)">
+                                            <t t-esc="c.name"/>
+                                        </div>
+                                    </t>
+                                    <div t-if="state.filteredCountries.length === 0" class="o_dropdown_empty">
+                                        Sin resultados
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Proveedor -->
                         <div class="col-md-6">
                             <label class="o_label">PROVEEDOR</label>

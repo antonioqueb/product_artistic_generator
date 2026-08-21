@@ -144,6 +144,20 @@ class ProductTemplate(models.Model):
         supplier_id = vals.get('supplier_id')
         product_type = vals.get('product_type', '')
 
+        # PROCEDENCIA OBLIGATORIA: nacional (país México por defecto) o
+        # importado (país a elegir, SIN IVA de compra).
+        procedencia = (vals.get('procedencia') or '').strip().lower()
+        origin_country_id = vals.get('origin_country_id')
+        if procedencia not in ('nacional', 'importado'):
+            raise UserError(_(
+                "Debe indicar si el producto es NACIONAL o IMPORTADO."))
+        if procedencia == 'nacional' and not origin_country_id:
+            mx = self.env.ref('base.mx', raise_if_not_found=False)
+            origin_country_id = mx.id if mx else False
+        if procedencia == 'importado' and not origin_country_id:
+            raise UserError(_(
+                "Producto importado: debe elegir el país de origen."))
+
         # Construir nombre según tipo
         if product_type == 'pieza':
             # Pieza: solo NOMBRE_COMERCIAL - MARCA (sin palabra de tipo)
@@ -212,11 +226,22 @@ class ProductTemplate(models.Model):
             'purchase_ok': True,
         }
 
+        # IMPORTADO: sin IVA de compra (los impuestos de importación se
+        # manejan por pedimento, no en la factura del proveedor extranjero).
+        # NACIONAL conserva el IVA de compra default de la compañía.
+        if procedencia == 'importado':
+            product_vals['supplier_taxes_id'] = [(5, 0, 0)]
+
         # Propagar los atributos a los campos de product.template definidos en
         # el módulo stock_lot_dimensions (pestaña "Atributos"). Cada campo se
         # escribe solo si existe en el modelo, para no romper si ese módulo no
         # estuviera instalado.
         tmpl_fields = self.env['product.template']._fields
+
+        # País de Origen: México en nacional (default) o el elegido en
+        # importado. Solo si el campo existe (stock_lot_dimensions).
+        if origin_country_id and 'x_origin_country_id' in tmpl_fields:
+            product_vals['x_origin_country_id'] = int(origin_country_id)
 
         # Unidad del Producto: SIEMPRE se llena según el tipo
         # (Placa / Formato / Pieza).

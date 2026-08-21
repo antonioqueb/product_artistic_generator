@@ -662,3 +662,40 @@
         }
     }
 }
+
+// Procedencia (nacional / importado) — obligatoria.
+.o_procedencia_btns {
+    display: flex;
+    gap: 8px;
+}
+
+.o_procedencia_btn {
+    flex: 1;
+    padding: 8px 12px;
+    font-weight: 800;
+    font-size: 12px;
+    border-radius: 8px;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+        border-color: #4BA4F2;
+        color: #155f94;
+    }
+
+    &.active {
+        border-color: #4BA4F2;
+        background: rgba(92, 185, 242, 0.14);
+        color: #155f94;
+    }
+}
+
+.o_procedencia_hint {
+    display: block;
+    margin-top: 4px;
+    color: #8f6500;
+    font-size: 11px;
+}
