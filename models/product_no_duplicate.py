@@ -28,9 +28,16 @@ _CREATE_BLOCK_MSG = (
 
 
 def _som_assert_product_admin(env, message):
+    # PLOMERÍA INTERNA (sudo) PASA SIEMPRE: el Generador crea con sudo() y
+    # en Odoo 19 has_group NO hace corto bajo su — sin este bypass explícito
+    # el candado también frenaba al Generador. Se usa _has_group (membresía
+    # real) y no has_group, porque base.group_no_one con has_group solo
+    # cuenta en modo debug.
+    if env.su:
+        return
     user = env.user
-    if user.has_group('base.group_system') \
-            or user.has_group('base.group_no_one'):
+    if user._has_group('base.group_system') \
+            or user._has_group('base.group_no_one'):
         return
     raise UserError(_(message))
 
