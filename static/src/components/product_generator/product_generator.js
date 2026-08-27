@@ -46,6 +46,8 @@ export class ArtisticGenerator extends Component {
             packTypes: [],
             hasStandardPack: false,
             packLines: [],
+            // Servicio: descripción opcional (va a la descripción de venta)
+            serviceDescription: '',
             selection: {
                 commercial_name: '',
                 origin_name: '',
@@ -85,6 +87,11 @@ export class ArtisticGenerator extends Component {
             this.state.filteredDimensions = [...this.state.dimensions];
             this.state.filteredSuppliers = [...this.state.suppliers];
             this.state.filteredBrands = [...this.state.brands];
+            // Menú "Crear Servicio": abre el generador ya en modo servicio.
+            const ctx = (this.props.action && this.props.action.context) || {};
+            if (ctx.generator_type) {
+                await this.selectType(ctx.generator_type);
+            }
         });
 
         document.addEventListener('click', (e) => {
@@ -326,16 +333,28 @@ export class ArtisticGenerator extends Component {
         return this.state.productType === 'pieza';
     }
 
+    get isServicio() {
+        return this.state.productType === 'servicio';
+    }
+
     get showAcabado() {
-        return !this.isPieza;
+        return !this.isPieza && !this.isServicio;
     }
 
     get showEspesor() {
-        return !this.isPieza;
+        return !this.isPieza && !this.isServicio;
     }
 
     get showColor() {
-        return !this.isPieza;
+        return !this.isPieza && !this.isServicio;
+    }
+
+    get showProcedencia() {
+        return !this.isServicio;
+    }
+
+    get showPack() {
+        return this.state.packModuleAvailable && !this.isServicio;
     }
 
     get showDimension() {
@@ -354,6 +373,7 @@ export class ArtisticGenerator extends Component {
             'placa_sintetica': 'NUEVA PLACA SINTÉTICA',
             'formato': 'NUEVO FORMATO',
             'pieza': 'NUEVA PIEZA',
+            'servicio': 'NUEVO SERVICIO',
         };
         return labels[this.state.productType] || 'NUEVO PRODUCTO';
     }
@@ -363,11 +383,20 @@ export class ArtisticGenerator extends Component {
     async selectType(typeName) {
         this.state.productType = typeName;
 
-        const categories = await this.orm.call(
+        let categories = await this.orm.call(
             "generator.category.config",
             "get_categories_for_type",
             [typeName]
         );
+        // Servicio sin configuración de categorías: se ofrecen todas.
+        if (typeName === 'servicio' && !categories.length) {
+            const all = await this.orm.searchRead("product.category", [], ["display_name"]);
+            categories = all.map((c) => ({
+                id: c.id,
+                display_name: c.display_name,
+                short_name: c.display_name.split(' / ').pop(),
+            }));
+        }
         this.state.subCategories = categories;
         this.state.step = 2;
     }
@@ -396,6 +425,36 @@ export class ArtisticGenerator extends Component {
         this.state.brandSearch = '';
         this.state.hasStandardPack = false;
         this.state.packLines = [];
+        this.state.serviceDescription = '';
+    }
+
+    // ---- Servicio ----
+
+    async createService() {
+        const name = (this.state.selection.commercial_name || '').trim();
+        if (!name) {
+            this.notification.add("Indica el nombre del servicio", { type: 'danger' });
+            return;
+        }
+        if (!this.state.selection.category_id) {
+            this.notification.add("Debe elegir una categoría", { type: 'danger' });
+            return;
+        }
+        const resId = await this.orm.call("product.template", "create_service_product", [{
+            'commercial_name': name,
+            'origin_name': this.state.selection.origin_name,
+            'supplier_id': this.state.selection.supplier_id || false,
+            'category_id': parseInt(this.state.selection.category_id),
+            'description': this.state.serviceDescription,
+        }]);
+        this.notification.add("¡Servicio creado exitosamente!", { type: 'success' });
+        this.action.doAction({
+            type: 'ir.actions.act_window',
+            res_model: 'product.template',
+            res_id: resId,
+            views: [[false, 'form']],
+            target: 'current',
+        });
     }
 
     // ---- Empaque estandarizado ----
@@ -441,6 +500,9 @@ export class ArtisticGenerator extends Component {
     // ---- Create ----
 
     async createProduct() {
+        if (this.isServicio) {
+            return this.createService();
+        }
         if (!this.state.selection.category_id) {
             this.notification.add("Debe elegir una categoría final", { type: 'danger' });
             return;

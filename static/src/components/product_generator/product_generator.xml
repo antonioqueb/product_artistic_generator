@@ -37,6 +37,12 @@
                             </div>
                             <span>PIEZA</span>
                         </div>
+                        <div class="o_choice_card o_choice_servicio" t-on-click="() => this.selectType('servicio')">
+                            <div class="o_icon_servicio">
+                                <div class="o_gear"><i class="fa fa-cogs"/></div>
+                            </div>
+                            <span>SERVICIO</span>
+                        </div>
                     </div>
                 </div>
 
@@ -50,10 +56,18 @@
                             <input type="text" class="o_input" t-model="state.selection.origin_name" placeholder="Nombre del proveedor para este producto..."/>
                         </div>
 
-                        <!-- Nombre Comercial -->
+                        <!-- Nombre Comercial / del Servicio -->
                         <div class="col-md-6">
-                            <label class="o_label">NOMBRE COMERCIAL</label>
-                            <input type="text" class="o_input" t-model="state.selection.commercial_name" placeholder="Ej: BLANCO CARRARA"/>
+                            <label class="o_label"><t t-esc="isServicio ? 'NOMBRE DEL SERVICIO *' : 'NOMBRE COMERCIAL'"/></label>
+                            <input type="text" class="o_input" t-model="state.selection.commercial_name"
+                                   t-att-placeholder="isServicio ? 'Ej: INSTALACIÓN DE PLACA, FLETE LOCAL, PULIDO...' : 'Ej: BLANCO CARRARA'"/>
+                        </div>
+
+                        <!-- Descripción (solo servicio) -->
+                        <div t-if="isServicio" class="col-12">
+                            <label class="o_label">DESCRIPCIÓN (OPCIONAL)</label>
+                            <input type="text" class="o_input" t-model="state.serviceDescription"
+                                   placeholder="Texto que aparecerá en cotizaciones y facturas..."/>
                         </div>
 
                         <!-- Acabado (NO pieza) -->
@@ -164,7 +178,7 @@
 
                         <!-- Categoría -->
                         <div class="col-md-6">
-                            <label class="o_label">CATEGORÍA</label>
+                            <label class="o_label"><t t-esc="isServicio ? 'CATEGORÍA *' : 'CATEGORÍA'"/></label>
                             <select class="o_select" t-model="state.selection.category_id">
                                 <option value="">ELIJA CATEGORÍA...</option>
                                 <t t-foreach="state.subCategories" t-as="sc" t-key="sc.id">
@@ -173,8 +187,8 @@
                             </select>
                         </div>
 
-                        <!-- Procedencia OBLIGATORIA: nacional / importado -->
-                        <div class="col-md-6">
+                        <!-- Procedencia OBLIGATORIA: nacional / importado (no aplica a servicios) -->
+                        <div class="col-md-6" t-if="showProcedencia">
                             <label class="o_label">PROCEDENCIA *</label>
                             <div class="o_procedencia_btns">
                                 <button type="button"
@@ -194,7 +208,7 @@
                         </div>
 
                         <!-- País de origen (México por defecto en nacional) -->
-                        <div class="col-md-6" t-if="state.procedencia">
+                        <div class="col-md-6" t-if="showProcedencia and state.procedencia">
                             <label class="o_label">PAÍS DE ORIGEN *</label>
                             <div class="o_searchable_select">
                                 <input type="text" class="o_input"
@@ -237,7 +251,7 @@
                             </div>
                         </div>
                         <!-- Empaque estandarizado (standard_pack_som) -->
-                        <div t-if="state.packModuleAvailable" class="col-12">
+                        <div t-if="showPack" class="col-12">
                             <div class="o_pack_section">
                                 <label class="o_pack_toggle">
                                     <input type="checkbox" t-att-checked="state.hasStandardPack" t-on-change="togglePack"/>
@@ -291,7 +305,7 @@
                     </div>
                     <div class="d-flex justify-content-between mt-4">
                         <button class="btn btn-secondary" t-on-click="goBackToType">VOLVER</button>
-                        <button class="o_btn_success" t-on-click="createProduct">CREAR PRODUCTO</button>
+                        <button class="o_btn_success" t-on-click="createProduct"><t t-esc="isServicio ? 'CREAR SERVICIO' : 'CREAR PRODUCTO'"/></button>
                     </div>
                 </div>
             </div>

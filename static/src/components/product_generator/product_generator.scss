@@ -256,6 +256,28 @@
                 }
             }
 
+            .o_icon_servicio {
+                width: 46px;
+                height: 38px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .o_gear {
+                    width: 34px;
+                    height: 34px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: linear-gradient(135deg, #c7ede0 0%, #5fbf9c 55%, #2f9e77 100%);
+                    border: 2px solid #26805f;
+                    box-shadow: 2px 2px 0 #1f6b50;
+                    color: #fff;
+                    font-size: 15px;
+                }
+            }
+
             .o_icon_pieza {
                 width: 46px;
                 height: 38px;
@@ -295,6 +317,13 @@
                     background: linear-gradient(135deg, #f5e6a3 0%, #E4A900 50%, #d4a000 100%);
                     border-color: #c49500;
                     box-shadow: 2px 2px 0 #b08500;
+                }
+
+                .o_icon_servicio .o_gear {
+                    background: linear-gradient(135deg, #f5e6a3 0%, #E4A900 50%, #d4a000 100%);
+                    border-color: #c49500;
+                    box-shadow: 2px 2px 0 #b08500;
+                    color: #5a4200;
                 }
             }
         }

@@ -308,3 +308,101 @@ class ProductTemplate(models.Model):
             self.env['product.origin.name'].sudo().create(origin_vals)
 
         return product_template.id
+
+    # ------------------------------------------------------------------
+    # SERVICIOS
+    # ------------------------------------------------------------------
+    @api.model
+    def _generator_service_uom(self):
+        """UdM 'Servicio' (unidad de servicio). Si no existe se crea como
+        unidad relativa a 'Unidades' con factor 1, así convive con compras
+        y ventas sin conversiones raras. Tolerante a Odoo 19 (relative_uom_id)
+        y a versiones con category_id."""
+        Uom = self.env['uom.uom'].sudo()
+        for name in ('Servicio', 'Unidad de servicio', 'Servicios'):
+            uom = Uom.search([('name', '=ilike', name)], limit=1)
+            if uom:
+                return uom
+        unit = self.env.ref('uom.product_uom_unit', raise_if_not_found=False)
+        vals = {'name': 'Servicio'}
+        if 'relative_uom_id' in Uom._fields:
+            if unit:
+                vals['relative_uom_id'] = unit.id
+            vals['relative_factor'] = 1.0
+        elif 'category_id' in Uom._fields and unit:
+            vals.update({'category_id': unit.category_id.id, 'uom_type': 'smaller', 'factor': 1.0})
+        return Uom.create(vals)
+
+    @api.model
+    def create_service_product(self, vals):
+        """Crea un SERVICIO desde el generador: tipo servicio, UdM 'Servicio',
+        sin inventario ni lotes, nombre en MAYÚSCULAS, con nombre de origen y
+        proveedor (también como proveedor del producto)."""
+        if not self.env.user.has_group('product_artistic_generator.group_product_generator'):
+            raise UserError(_("No tiene permisos para generar productos."))
+
+        name = ' '.join((vals.get('commercial_name') or '').upper().split())
+        if not name:
+            raise UserError(_("Indica el nombre del servicio."))
+        category_id = vals.get('category_id')
+        if not category_id:
+            raise UserError(_("Elige la categoría del servicio."))
+        origin_name = (vals.get('origin_name') or '').strip()
+        supplier_id = vals.get('supplier_id')
+        description = (vals.get('description') or '').strip()
+
+        existing = self.env['product.template'].sudo().search([('name', '=ilike', name)], limit=1)
+        if existing:
+            raise UserError(_(
+                "Ya existe un producto con el nombre '%(name)s' (ID: %(id)s). "
+                "No se puede crear un duplicado.", name=name, id=existing.id))
+
+        uom = self._generator_service_uom()
+        tmpl_fields = self.env['product.template']._fields
+        product_vals = {
+            'name': name,
+            'type': 'service',
+            'categ_id': int(category_id),
+            'uom_id': uom.id,
+            'list_price': 0.0,
+            'sale_ok': True,
+            'purchase_ok': True,
+        }
+        # Campos que dependen de módulos/versión: solo si existen en el modelo.
+        optional_vals = {
+            'is_storable': False,            # stock: sin inventario
+            'tracking': 'none',              # sin lotes
+            'uom_po_id': uom.id,             # versiones con UdM de compra
+            'purchase_method': 'purchase',
+            'x_unidad_del_producto': 'Servicio',   # stock_lot_dimensions
+        }
+        if description:
+            optional_vals['description_sale'] = description
+        for fname, value in optional_vals.items():
+            if fname in tmpl_fields:
+                product_vals[fname] = value
+
+        product_template = self.env['product.template'].sudo().create(product_vals)
+
+        if origin_name and 'product.origin.name' in self.env:
+            origin_vals = {
+                'name': origin_name,
+                'product_tmpl_id': product_template.id,
+                'sequence': 10,
+            }
+            if supplier_id:
+                origin_vals['partner_id'] = int(supplier_id)
+            self.env['product.origin.name'].sudo().create(origin_vals)
+
+        # Proveedor del servicio: queda en la pestaña Compra para que la OC
+        # lo proponga solo.
+        if supplier_id and 'product.supplierinfo' in self.env:
+            self.env['product.supplierinfo'].sudo().create({
+                'partner_id': int(supplier_id),
+                'product_tmpl_id': product_template.id,
+                'min_qty': 0.0,
+                'price': 0.0,
+                'product_name': origin_name or False,
+            })
+
+        return product_template.id
