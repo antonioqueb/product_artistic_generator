@@ -78,6 +78,8 @@
                                     t-model="state.finishSearch"
                                     t-on-input="filterFinishes"
                                     t-on-focus="onFinishFocus"
+                                    t-on-blur="() => this.onSearchableBlur('finish')"
+                                    t-on-keydown="(ev) => this.onSearchableKeydown('finish', ev)"
                                     placeholder="Buscar acabado..."/>
                                 <div t-if="state.showFinishDropdown" class="o_dropdown_list">
                                     <t t-foreach="state.filteredFinishes" t-as="f" t-key="f.id">
@@ -103,6 +105,8 @@
                                     t-model="state.thicknessSearch"
                                     t-on-input="filterThicknesses"
                                     t-on-focus="onThicknessFocus"
+                                    t-on-blur="() => this.onSearchableBlur('thickness')"
+                                    t-on-keydown="(ev) => this.onSearchableKeydown('thickness', ev)"
                                     placeholder="Buscar espesor..."/>
                                 <div t-if="state.showThicknessDropdown" class="o_dropdown_list">
                                     <t t-foreach="state.filteredThicknesses" t-as="t" t-key="t.id">
@@ -134,6 +138,8 @@
                                     t-model="state.brandSearch"
                                     t-on-input="filterBrands"
                                     t-on-focus="onBrandFocus"
+                                    t-on-blur="() => this.onSearchableBlur('brand')"
+                                    t-on-keydown="(ev) => this.onSearchableKeydown('brand', ev)"
                                     placeholder="Buscar marca..."/>
                                 <div t-if="state.showBrandDropdown" class="o_dropdown_list">
                                     <t t-foreach="state.filteredBrands" t-as="b" t-key="b.id">
@@ -159,6 +165,8 @@
                                     t-model="state.dimensionSearch"
                                     t-on-input="filterDimensions"
                                     t-on-focus="onDimensionFocus"
+                                    t-on-blur="() => this.onSearchableBlur('dimension')"
+                                    t-on-keydown="(ev) => this.onSearchableKeydown('dimension', ev)"
                                     placeholder="Buscar dimensión..."/>
                                 <div t-if="state.showDimensionDropdown" class="o_dropdown_list">
                                     <t t-foreach="state.filteredDimensions" t-as="d" t-key="d.id">
@@ -215,6 +223,8 @@
                                     t-model="state.countrySearch"
                                     t-on-input="filterCountries"
                                     t-on-focus="onCountryFocus"
+                                    t-on-blur="() => this.onSearchableBlur('country')"
+                                    t-on-keydown="(ev) => this.onSearchableKeydown('country', ev)"
                                     placeholder="Buscar país..."/>
                                 <div t-if="state.showCountryDropdown" class="o_dropdown_list">
                                     <t t-foreach="state.filteredCountries" t-as="c" t-key="c.id">
@@ -237,6 +247,8 @@
                                     t-model="state.supplierSearch"
                                     t-on-input="filterSuppliers"
                                     t-on-focus="onSupplierFocus"
+                                    t-on-blur="() => this.onSearchableBlur('supplier')"
+                                    t-on-keydown="(ev) => this.onSearchableKeydown('supplier', ev)"
                                     placeholder="Buscar proveedor..."/>
                                 <div t-if="state.showSupplierDropdown" class="o_dropdown_list">
                                     <t t-foreach="state.filteredSuppliers" t-as="s" t-key="s.id">

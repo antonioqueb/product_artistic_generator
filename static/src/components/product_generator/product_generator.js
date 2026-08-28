@@ -143,6 +143,79 @@ export class ArtisticGenerator extends Component {
         this.state.showCountryDropdown = false;
     }
 
+    // ---- Resolución de texto tecleado en los buscadores ----
+    // BUG REAL (reproducido): teclear "Italia" y pasar al siguiente campo
+    // sin hacer clic en la opción dejaba el país en null aunque el campo
+    // mostrara "Italia" → "Producto importado: debe elegir el país". En
+    // acabado/espesor/marca/proveedor fallaba EN SILENCIO (producto sin ese
+    // dato). Ahora el texto se resuelve solo (coincidencia exacta o
+    // candidato único) al salir del campo, con Enter/Tab y antes de crear.
+    get _searchables() {
+        return {
+            country:   { list: 'countries',   search: 'countrySearch',   dropdown: 'showCountryDropdown',   sel: 'origin_country_id', select: 'selectCountry' },
+            finish:    { list: 'finishes',    search: 'finishSearch',    dropdown: 'showFinishDropdown',    sel: 'finish_id',         select: 'selectFinish' },
+            thickness: { list: 'thicknesses', search: 'thicknessSearch', dropdown: 'showThicknessDropdown', sel: 'thickness_id',      select: 'selectThickness' },
+            dimension: { list: 'dimensions',  search: 'dimensionSearch', dropdown: 'showDimensionDropdown', sel: 'dimension_id',      select: 'selectDimension' },
+            brand:     { list: 'brands',      search: 'brandSearch',     dropdown: 'showBrandDropdown',     sel: 'brand_id',          select: 'selectBrand' },
+            supplier:  { list: 'suppliers',   search: 'supplierSearch',  dropdown: 'showSupplierDropdown',  sel: 'supplier_id',       select: 'selectSupplier' },
+        };
+    }
+
+    resolveTyped(key) {
+        const cfg = this._searchables[key];
+        if (!cfg) return false;
+        const items = this.state[cfg.list] || [];
+        const text = (this.state[cfg.search] || '').trim();
+        const selectedId = this.state.selection[cfg.sel];
+        if (selectedId) {
+            // Ya elegido: si el foco borró el texto, se restaura el nombre.
+            if (!text) {
+                const cur = items.find((i) => i.id == selectedId);
+                if (cur) this.state[cfg.search] = (cur.name || '').toUpperCase();
+            }
+            return true;
+        }
+        if (!text) return false;
+        const v = text.toLowerCase();
+        const norm = key === 'dimension' ? this.dimensionCreateLabel.toLowerCase() : v;
+        let match = items.find((i) => {
+            const n = (i.name || '').toLowerCase();
+            return n === v || n === norm;
+        });
+        if (!match) {
+            const cands = items.filter((i) => (i.name || '').toLowerCase().includes(v));
+            if (cands.length === 1) match = cands[0];
+        }
+        if (!match) return false;
+        this[cfg.select](match);
+        return true;
+    }
+
+    onSearchableBlur(key) {
+        // Pequeña espera: si el usuario hizo clic en una opción, ese clic
+        // llega después del blur y debe ganar.
+        setTimeout(() => {
+            this.resolveTyped(key);
+            const cfg = this._searchables[key];
+            if (cfg) this.state[cfg.dropdown] = false;
+        }, 180);
+    }
+
+    onSearchableKeydown(key, ev) {
+        if (ev.key === 'Enter' || ev.key === 'Tab') {
+            if (ev.key === 'Enter') ev.preventDefault();
+            this.resolveTyped(key);
+            const cfg = this._searchables[key];
+            if (cfg) this.state[cfg.dropdown] = false;
+        }
+    }
+
+    resolveAllTyped() {
+        for (const key of Object.keys(this._searchables)) {
+            this.resolveTyped(key);
+        }
+    }
+
     // ---- Searchable dropdown handlers ----
 
     onFinishFocus() {
@@ -431,6 +504,7 @@ export class ArtisticGenerator extends Component {
     // ---- Servicio ----
 
     async createService() {
+        this.resolveAllTyped();
         const name = (this.state.selection.commercial_name || '').trim();
         if (!name) {
             this.notification.add("Indica el nombre del servicio", { type: 'danger' });
@@ -503,6 +577,7 @@ export class ArtisticGenerator extends Component {
         if (this.isServicio) {
             return this.createService();
         }
+        this.resolveAllTyped();
         if (!this.state.selection.category_id) {
             this.notification.add("Debe elegir una categoría final", { type: 'danger' });
             return;
@@ -518,7 +593,7 @@ export class ArtisticGenerator extends Component {
         if (!this.state.selection.origin_country_id) {
             this.notification.add(
                 this.state.procedencia === 'importado'
-                    ? "Producto importado: debe elegir el país de origen."
+                    ? "Producto importado: elige el país de origen de la lista (haz clic en la opción)."
                     : "Debe indicar el país de origen.",
                 { type: 'danger' });
             return;
